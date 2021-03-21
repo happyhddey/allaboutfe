@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfoVis Programming Exercise 1 - 20181072 Hyejin Kim</title>
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+    <link rel="stylesheet" href="./index.css">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div id="example-container">
+        <h2>Exercise 1</h2>
+        <h3>Draw circle, rectangle, and triangle</h3>
+        <div id="svg-container1">
+            <svg width="600" height="200">
+                <g transform="scale(1.7)">
+                    <circle cx="50" cy="50" r="40" fill="yellow"></circle>
+                    <rect x="105" y="10" width="80" height="80" fill="blue"></rect>
+                    <polygon points="250, 10 300, 90 200, 90" fill="red"></polygon>
+                </g>
+            </svg>
+        </div>
+    </div>
+    
+    <div id="example-container">
+        <h2>Exercise 2</h2>
+        <h3>Draw Solar System. You can choose option to rearrange plantes: reset, size, weight, alphabet</h3>
+        <div id="svg-container2">
+            <svg>
+                
+            </svg>
+        </div>
+        <div id="button-container">
+            <button id="button-reset">reset</button>
+            <button id="button-size">size</button>
+            <button id="button-weight">weight</button>
+            <button id="button-alphabet">alphabet</button>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="./index.js"></script>
+</body>
+</html>

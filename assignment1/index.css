@@ -1,0 +1,41 @@
+body { 
+    font-family: sans-serif; 
+}
+
+div{
+    margin: 20px;
+}
+
+h2 {
+    margin: 10px;
+}
+
+h3 {
+    margin-top: 5px;
+    margin-left: 15px;
+}
+
+#example-container {
+    padding: 10px;
+    border: 2px solid lightgray;
+    border-radius: 7px;
+}
+
+#example-container #svg-container1 { 
+    margin: 15px;
+    overflow: hidden;
+}
+
+
+#example-container #svg-container2 { 
+    margin: 15px;
+    overflow: hidden;
+}
+
+#example-container #svg-container2 svg{
+    background-color:whitesmoke;
+}
+
+#example-container #button-container{
+    text-align: right;
+}
