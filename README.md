@@ -13,16 +13,13 @@ See the eight `planets` of solar system.
 Rearrange them in specific order: reset(distance from the Sun), size, weight, alphabet  
 Using `transition` in D3.js makes animation smooth.  
 <br>
-<br>
 
 ### Project 2: up-to-date
 up-to-date  
 <br>
-<br>
 
 ### Project 3: up-to-date
 up-to-date  
-<br>
 <br>
 
 ### Project 4: up-to-date
