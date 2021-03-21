@@ -1,0 +1,49 @@
+body{
+    margin: 10%;
+}
+
+h2 {
+    margin: 0%;
+    margin-bottom: 2%;
+}
+
+p {
+    margin: 0%;
+    margin-bottom: 1%;
+    padding-left: 2%;
+}
+
+a {
+    padding-left: 2%;
+}
+
+header {
+    padding: 2px;
+    border-radius: 15px;
+    background-color: rgb(241, 240, 219);
+    text-align: center;
+    margin-bottom: 5%;
+}
+
+.projects_container .project{
+    padding: 3% 5% 3% 5%;
+    border-radius: 15px;
+    text-align: left;
+    margin-bottom: 2%;
+}
+
+.projects_container .num1 {
+    background-color: rgb(255, 248, 189);
+}
+
+.projects_container .num2 {
+    background-color: rgb(255, 244, 157);
+}
+
+.projects_container .num3 {
+    background-color: rgb(255, 241, 134);
+}
+
+.projects_container .num4 {
+    background-color: rgb(255, 237, 104);
+}
