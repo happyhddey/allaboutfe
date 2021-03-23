@@ -1,14 +1,13 @@
 # README.md
 ## Description
-Projects files for `CSE468(InfoVis)` of UNIST.  
-There will be 4 projects using `D3.js library`.  
-From now on, project 1 is updated.  
-3 projects left.  
+One toy project in a week for studying front-end development skill.  
+Started from 03.24.21  
+Feel free to comment on my codes.  
 <br>
 <br>
 
 ## Projects Overview
-### Project 1: Solar System
+### Project 1: Solar System (03.17-03.19)
 See the eight `planets` of solar system.  
 Rearrange them in specific order: reset(distance from the Sun), size, weight, alphabet  
 Using `transition` in D3.js makes animation smooth.  
@@ -18,18 +17,9 @@ Using `transition` in D3.js makes animation smooth.
 up-to-date  
 <br>
 
-### Project 3: up-to-date
-up-to-date  
-<br>
-
-### Project 4: up-to-date
-up-to-date  
-<br>
-<br>
 
 ## See More
 This repository is published to Github Pages.  
 Please visit [HERE](https://happyhddey.github.io/infovis/).  
-**The page is not available now since this repository is private**  
 <br>
 <br>
