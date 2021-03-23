@@ -20,6 +20,6 @@ up-to-date
 
 ## See More
 This repository is published to Github Pages.  
-Please visit [HERE](https://happyhddey.github.io/infovis/).  
+Please visit [HERE](https://happyhddey.github.io/everyweek/).  
 <br>
 <br>
