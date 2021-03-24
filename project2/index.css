@@ -69,11 +69,22 @@
     color: gray;
 }
 
-.test-map .row p {
+.test-map .row1 .col2 {
     margin: 0%;
+    color: blue;
 }
 
-.test-map .row1 .col1 {
+#testmap .row{
+    justify-content: center;
+    display: flex;
+    color: gray;
+}
+
+#testmap .row .col {
     margin: 0%;
+    color:gray;
+}
+
+#testmap .row1 .col2{
     color: blue;
 }

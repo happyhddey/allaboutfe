@@ -212,6 +212,35 @@ const gameControl = function(htmlMapElement, htmlScoreElement, htmlModal){
 
 
 
+// Add HTML elements for duck map on index.html
+const makeMapOntoHTML = function(mapSize){
+
+    const testMap = document.getElementById('testmap');
+
+    for (let i=0; i<mapSize; i++){
+        let ithRow = document.createElement("div");
+        let rowText = "row row" + i;
+        ithRow.setAttribute("class", rowText);
+
+        for (let j=0; j<mapSize; j++){
+            let jthCol = document.createElement("p");
+            let colText = "col col" + j;
+            jthCol.setAttribute("class", colText);
+            jthCol.innerHTML = "#";
+            ithRow.appendChild(jthCol);
+        }
+
+        testMap.appendChild(ithRow);
+    }
+}
+//makeMapOntoHTML(5);
+
+
+
+
+
+
+
 
 const map = document.getElementById('map');
 const score = document.getElementById('score');
