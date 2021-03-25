@@ -1,0 +1,76 @@
+#game-wrapper{
+    margin: 10%;
+    margin-left: 30%;
+    margin-right: 30%;
+    padding-top: 10%;
+    padding-bottom: 10%;
+    border: 3px solid black;
+    border-radius: 10px;
+}
+
+#title-wrapper {
+    text-align: center;
+}
+
+#score-wrapper {
+    text-align: center;
+}
+
+#map-wrapper {
+    text-align: center;
+    font-family: monospace;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+#map {
+    font-family: monospace;
+    font-size: 17px;
+}
+
+#map .row{
+    justify-content: center;
+    display: flex;
+    color: gray;
+}
+
+#map .row .col {
+    margin: 0%;
+    color:gray;
+}
+
+#button-wrapper{
+    text-align: center;
+    width: 100%;
+}
+
+.modal-wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal{
+    background: white;
+    padding: 24px 16px;
+    border-radius: 4px;
+    width: 320px;
+}
+
+.modal-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+.modal p {
+    font-size: 16px;
+}
+
+.close-wrapper {
+    text-align: right;
+}
