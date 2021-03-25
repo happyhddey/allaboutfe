@@ -5,6 +5,7 @@ const cellConstructor = function(){
     
     const Cell = function(){
         this.visitedTime = 0;
+        this.visited = false;
         this.cellType = 'bush';
     }
     
@@ -23,12 +24,16 @@ const cellConstructor = function(){
         this.visitedTime = currentTime;
     }
     
+    Cell.prototype.setVisited = function(){
+        this.visited = true;
+    }
+
     Cell.prototype.setCellType = function(type){
         this.cellType = type;
     }
     
     Cell.prototype.isVisited = function(){
-        if (this.visitedTime != 0){
+        if (this.visited){
             return true;
         }
         else{
@@ -53,7 +58,7 @@ const cellConstructor = function(){
     
     Cell.prototype.translateToRGB = function(cellColorStage){
         const {numColorStage, highestWhiteValue} = this.colorStageInfo;
-        const whiteValue = (highestWhiteValue / numColorStage) * cellColorStage;
+        const whiteValue = (highestWhiteValue / numColorStage) * (numColorStage - cellColorStage);
         return `rgb(${whiteValue}, ${whiteValue}, ${whiteValue})`
     }
     
@@ -79,26 +84,15 @@ const cellConstructor = function(){
 }
 
 
-/*
-const Cell = cellConstructor();
-const cell = new Cell();
-console.log(cell);
-console.log(cell.getText());
-console.log(cell.getColor());
-cell.setVisitedTime(4);
-console.log(cell.getText(true));
-console.log(cell.getText(false));
-console.log(cell.getColor(4));
-*/
-
-
-
-
 
 const DuckTravelMap = function(size = 7){
 
     const mapSize = size;
     const Cell = cellConstructor();
+
+    const getSize = function(){
+        return mapSize;
+    }
 
     const createTagWithClass = function(tag, className){
         let newTag = document.createElement(tag);
@@ -140,7 +134,7 @@ const DuckTravelMap = function(size = 7){
 
     // html 요소를 추가하면서, cell과 dom을 연결하는 map array 만듦
     const makeMap = function(){
-        const htmlMap = document.getElementById('testmap');
+        const htmlMap = document.getElementById('map');
         const duckMap = [];
 
         for (let i=0; i<mapSize; i++){
@@ -150,7 +144,7 @@ const DuckTravelMap = function(size = 7){
             for (let j=0; j<mapSize; j++){
                 const htmlCol = createTagWithClass("p", "col col" + j);
                 const duckCol = {"cell":new Cell(), "dom":htmlCol};
-                htmlCol.innerHTML = "#";
+                // htmlCol.innerHTML = "#";
                 htmlRow.appendChild(htmlCol);
                 duckRow.push(duckCol);
             }
@@ -160,36 +154,172 @@ const DuckTravelMap = function(size = 7){
         return duckMap;
     }
 
-    return {makeMap};
+    return {getSize, makeMap};
+}
+
+
+
+
+
+const gameControl = function(duckTravelMap){
+    
+    const mapSize = duckTravelMap.getSize();
+    const duckMap = duckTravelMap.makeMap();
+    let duckLocation = (function() {
+        const startPoint = Math.floor(mapSize / 2);
+        const totalStep = startPoint;
+        let duckX = Math.floor(Math.random() * mapSize);
+        let leftStep = totalStep - Math.abs(totalStep - duckX);
+        if(Math.random() > 0.5){
+            duckY = totalStep - leftStep;
+        }
+        else{
+            duckY = totalStep + leftStep;
+        }
+        return {x: duckX, y:duckY};
+    })();
+    let curLocation = (function() {
+        const startPoint = Math.floor(mapSize/2);
+        duckMap[startPoint][startPoint].cell.setVisited();
+        return {x: startPoint, y:startPoint};
+    })();
+    let currentTime = 0;
+
+    const updateCurLocation = function(newX, newY){
+        curLocation.x = newX;
+        curLocation.y = newY;
+    }
+
+    const checkRange = function(x, y){
+        if((x >= 0) && (x < mapSize) && (y >= 0) && (y < mapSize)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    const updateCellState = function(curLocation, currentTime){
+        const {x, y} = curLocation;
+        const cell = duckMap[x][y].cell;
+        cell.setVisitedTime(currentTime);
+        cell.setVisited();
+    }
+
+    const isCurrentLocation = function(mapX, mapY, curLocation){
+        const {x, y} = curLocation;
+        if((mapX == x) && (mapY == y)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    const isEqualToDuckLocation = function(){
+        if((curLocation.x == duckLocation.x) && (curLocation.y == duckLocation.y)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    const updateCell = function(dom, text, color){
+        dom.innerText = text;
+        dom.style.color = color;
+    }
+
+    const updateMap = function(){
+        for (let i=0; i<mapSize; i++){
+            for (let j=0; j<mapSize; j++){
+                const elem = duckMap[i][j];
+                const elemCell = elem.cell;
+                const elemDom = elem.dom;
+                const text = elemCell.getText(isCurrentLocation(i, j, curLocation));
+                const color = elemCell.getColor(currentTime);
+                updateCell(elemDom, text, color);
+            }
+        }
+    }
+
+
+    const clickButton = function(direction){
+        const button ={
+            "up": (x, y) => {return [x-1, y]},
+            "down": (x, y) => {return [x+1, y]},
+            "left": (x, y) => {return [x, y-1]},
+            "right": (x, y) => {return [x, y+1]}
+        }
+        return button[direction];
+    }
+
+    const updateCurrentTime = function(){
+        currentTime++;
+    }
+
+    const updateScore = function(){
+        const score = document.getElementById('score');
+        score.innerText = "SCORE: " + currentTime;
+    }
+
+    const callModal = function(){
+        const modal_wrapper = document.querySelector('.modal-wrapper');
+        modal_wrapper.style.display = 'flex';
+    }
+
+    const buttonRoutine = function(direction){
+        const {x, y} = curLocation;
+        const move = clickButton(direction);
+        [newX, newY] = move(x, y);
+        
+        if (checkRange(newX, newY)){
+            updateCurLocation(newX, newY);
+            updateCurrentTime();
+            updateCellState(curLocation, currentTime);
+            updateMap();
+            updateScore();
+            if(isEqualToDuckLocation()){
+                callModal();
+            }
+        }
+    }
+
+    return {updateCurLocation, updateScore, updateMap, buttonRoutine};
 }
 
 const duckTravelMap = DuckTravelMap(5);
-const duckMap = duckTravelMap.makeMap();
+const gc = gameControl(duckTravelMap);
+gc.updateMap();
+gc.updateScore();
 
 
 
-const windowControl = function(){
-
-}
-
-
-
-
-
-/*
-const map = document.getElementById('map');
-const score = document.getElementById('score');
-const modal_wrapper = document.querySelector('.modal-wrapper');
 
 const button_up = document.getElementById('button_up');
 const button_left = document.getElementById('button_left');
 const button_right = document.getElementById('button_right');
 const button_down = document.getElementById('button_down');
-
 const button_close = document.getElementById('close');
 
+button_up.onclick = () => {
+    gc.buttonRoutine("up");
+}
+
+button_left.onclick = () => {
+    gc.buttonRoutine("left");
+}
+
+button_right.onclick = () => {
+    gc.buttonRoutine("right");
+}
+
+button_down.onclick = () => {
+    gc.buttonRoutine("down");
+}
+
 button_close.onclick = () => {
+    const modal_wrapper = document.querySelector('.modal-wrapper');
     modal_wrapper.style.display = 'none';
     document.location.reload();
 }
-*/

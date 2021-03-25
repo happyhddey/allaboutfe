@@ -40,6 +40,24 @@
     justify-content: center;
 }
 
+
+#map {
+    font-family: monospace;
+    font-size: 20px;
+}
+
+#map .row{
+    justify-content: center;
+    display: flex;
+    color: gray;
+}
+
+#map .row .col {
+    margin: 0%;
+    color:gray;
+}
+
+
 .modal{
     background: white;
     padding: 24px 16px;
@@ -57,39 +75,4 @@
 
 .close-wrapper {
     text-align: right;
-}
-
-.test-map {
-    background-color: lightgray;
-}
-
-.test-map .row{
-    justify-content: center;
-    display: flex;
-    color: gray;
-}
-
-.test-map .row1 .col2 {
-    margin: 0%;
-    color: blue;
-}
-
-#testmap {
-    font-family: sans-serif;
-    font-size: 20px;
-}
-
-#testmap .row{
-    justify-content: center;
-    display: flex;
-    color: gray;
-}
-
-#testmap .row .col {
-    margin: 0%;
-    color:gray;
-}
-
-#testmap .row1 .col2{
-    color: blue;
 }
