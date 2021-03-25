@@ -1,84 +1,93 @@
-const Cell = function(){
-    this.visitedTime = 0;
-    this.cellType = 'bush';
-}
 
-Cell.prototype.textSet = {
-    current:'A',
-    visited:'#',
-    bush:','
-}
+/* Wrap-up 'Cell' constructor and its prototype functions */
 
-Cell.prototype.colorStageInfo = {
-    numColorStage: 4,
-    highestWhiteValue: 211,
-}
-
-Cell.prototype.setVisitedTime = function(currentTime){
-    this.visitedTime = currentTime;
-}
-
-Cell.prototype.setCellType = function(type){
-    this.cellType = type;
-}
-
-Cell.prototype.isVisited = function(){
-    if (this.visitedTime != 0){
-        return true;
+const cellConstructor = function(){
+    
+    const Cell = function(){
+        this.visitedTime = 0;
+        this.cellType = 'bush';
     }
-    else{
-        return false;
+    
+    Cell.prototype.textSet = {
+        current:'A',
+        visited:'#',
+        bush:','
     }
+    
+    Cell.prototype.colorStageInfo = {
+        numColorStage: 4,
+        highestWhiteValue: 211,
+    }
+    
+    Cell.prototype.setVisitedTime = function(currentTime){
+        this.visitedTime = currentTime;
+    }
+    
+    Cell.prototype.setCellType = function(type){
+        this.cellType = type;
+    }
+    
+    Cell.prototype.isVisited = function(){
+        if (this.visitedTime != 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    // isCurrentLocation 함수를 만들어야 할까?
+    Cell.prototype.getText = function(isCurrentLocation){
+        const textSet = this.textSet;
+        let text = ' ';
+        if (isCurrentLocation){
+            text = textSet["current"];
+        }
+        else if (this.isVisited()){
+            text = textSet["visited"];
+        }
+        else {
+            text = textSet[this.cellType];
+        }
+        return text;
+    }
+    
+    Cell.prototype.translateToRGB = function(cellColorStage){
+        const {numColorStage, highestWhiteValue} = this.colorStageInfo;
+        const whiteValue = (highestWhiteValue / numColorStage) * cellColorStage;
+        return `rgb(${whiteValue}, ${whiteValue}, ${whiteValue})`
+    }
+    
+    // getColorStage를 따로 분리하는 게 나을까?
+    Cell.prototype.getColorStage = function(currentTime){
+        let cellColorStage = 0;
+        const timePassed = currentTime - this.visitedTime;
+        if (timePassed <= this.colorStageInfo.numColorStage){
+            cellColorStage = this.colorStageInfo.numColorStage - timePassed;
+        }
+        return cellColorStage;
+    }
+    
+    Cell.prototype.getColor = function(currentTime){
+        let cellColorStage = 0;
+        if (this.isVisited()){
+            cellColorStage = this.getColorStage(currentTime, this.colorStageInfo);
+        }
+        return this.translateToRGB(cellColorStage, this.colorStageInfo);
+    }
+
+    return Cell;
 }
 
-// isCurrentLocation 함수를 만들어야 할까?
-Cell.prototype.getText = function(isCurrentLocation){
-    const textSet = this.textSet;
-    let text = ' ';
-    if (isCurrentLocation){
-        text = textSet["current"];
-    }
-    else if (this.isVisited()){
-        text = textSet["visited"];
-    }
-    else {
-        text = textSet[this.cellType];
-    }
-    return text;
-}
-
-Cell.prototype.translateToRGB = function(cellColorStage){
-    const {numColorStage, highestWhiteValue} = this.colorStageInfo;
-    const whiteValue = (highestWhiteValue / numColorStage) * cellColorStage;
-    return `rgb(${whiteValue}, ${whiteValue}, ${whiteValue})`
-}
-
-// getColorStage를 따로 분리하는 게 나을까?
-Cell.prototype.getColorStage = function(currentTime){
-    let cellColorStage = 0;
-    const timePassed = currentTime - this.visitedTime;
-    if (timePassed <= this.colorStageInfo.numColorStage){
-        cellColorStage = this.colorStageInfo.numColorStage - timePassed;
-    }
-    return cellColorStage;
-}
-
-Cell.prototype.getColor = function(currentTime){
-    let cellColorStage = 0;
-    if (this.isVisited()){
-        cellColorStage = this.getColorStage(currentTime, this.colorStageInfo);
-    }
-    return this.translateToRGB(cellColorStage, this.colorStageInfo);
-}
-
-// const cell = new Cell();
-// console.log(cell);
-// console.log(cell.getText());
-// console.log(cell.getColor());
-// cell.setVisitedTime(4);
-// console.log(cell.getText(true));
-// console.log(cell.getText(false));
-// console.log(cell.getColor(4));
+const Cell = cellConstructor();
+const cell = new Cell();
+console.log(cell);
+console.log(cell.getText());
+console.log(cell.getColor());
+cell.setVisitedTime(4);
+console.log(cell.getText(true));
+console.log(cell.getText(false));
+console.log(cell.getColor(4));
 
 
 
@@ -94,20 +103,14 @@ const DuckTravleMap = function(mapSize = 7){
         return cell;
     }
 
-    const initialize = function(){
+    const makeMap = function(){
         for (let i=0; i<mapSize; i++){
             const arr = Array.from({length: mapSize}, () => makeCell());
             duckTravleMap.push(arr);
         }
     }
 
-    const duckTravleMap = initialize();
-
-
-    
-
-
-    return duckTravleMap;
+    return makeMap();
 }
 
 
