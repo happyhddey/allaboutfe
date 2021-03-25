@@ -149,22 +149,28 @@ const DuckTravelMap = function(size = 7){
 
             for (let j=0; j<mapSize; j++){
                 const htmlCol = createTagWithClass("p", "col col" + j);
-                htmlRow.appendChild(htmlCol);
                 const duckCol = {"cell":new Cell(), "dom":htmlCol};
+                htmlCol.innerHTML = "#";
+                htmlRow.appendChild(htmlCol);
                 duckRow.push(duckCol);
             }
             htmlMap.appendChild(htmlRow);
+            duckMap.push(duckRow);
         }
+        return duckMap;
     }
 
     return {makeMap};
 }
 
 const duckTravelMap = DuckTravelMap(5);
-duckTravelMap.makeMap();
+const duckMap = duckTravelMap.makeMap();
 
 
 
+const windowControl = function(){
+
+}
 
 
 
