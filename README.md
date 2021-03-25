@@ -13,13 +13,13 @@ Rearrange them in specific order: reset(distance from the Sun), size, weight, al
 Using `transition` in D3.js makes animation smooth.  
 <br>
 
-### Project 2: up-to-date
+### Project 2: Find Duck (03.15-??.??)
 up-to-date  
 <br>
 
 
 ## See More
 This repository is published to Github Pages.  
-Please visit [HERE](https://happyhddey.github.io/everyweek/).  
+Please visit [HERE](https://happyhddey.github.io/allaboutfe/).  
 <br>
 <br>
