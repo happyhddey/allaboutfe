@@ -95,7 +95,7 @@ console.log(cell.getColor(4));
 
 
 
-const DuckTravleMap = function(size = 7){
+const DuckTravelMap = function(size = 7){
 
     const mapSize = size;
 
@@ -105,9 +105,10 @@ const DuckTravleMap = function(size = 7){
         return newTag;
     }
 
+    // html 파일에 map에 사용될 tag 추가
     const drawMapOutline = function(){
         const mapContainer = document.getElementById('testmap');
-        console.log(mapSize);
+
         for (let i=0; i<mapSize; i++){
             let ithRow = createTagWithClass("div", "row row" + i);
 
@@ -120,29 +121,9 @@ const DuckTravleMap = function(size = 7){
         }
     }
 
-    // const drawMapOutline2 = function(mapSize){
-
-    //     const testMap = document.getElementById('testmap');
-
-    //     for (let i=0; i<mapSize; i++){
-    //         let ithRow = document.createElement("div");
-    //         let rowText = "row row" + i;
-    //         ithRow.setAttribute("class", rowText);
-
-    //         for (let j=0; j<mapSize; j++){
-    //             let jthCol = document.createElement("p");
-    //             let colText = "col col" + j;
-    //             jthCol.setAttribute("class", colText);
-    //             jthCol.innerHTML = "#";
-    //             ithRow.appendChild(jthCol);
-    //         }
-
-    //         testMap.appendChild(ithRow);
-    //     }
-    // }
-
-    const makeMap = function(){
-        const duckTravleMap = [];
+    // cell과 dom을 함께 저장하고 있는 map array 만듦
+    const makeMap2 = function(){
+        const duckTravelMap = [];
         for (let i=0; i<mapSize; i++){
             const arr = [];
             let rowElements = document.getElementsByClassName("row" + i)[0];
@@ -151,16 +132,35 @@ const DuckTravleMap = function(size = 7){
                 let dom = rowElements.getElementsByClassName("col" + j)[0];
                 arr.push({"cell":cell, "dom":dom});
             }
-            duckTravleMap.push(arr);
+            duckTravelMap.push(arr);
         }
-        return duckTravleMap;
+        return duckTravelMap;
+    }
+
+    // html 요소를 추가하면서, cell과 dom을 연결하는 map array 만듦
+    const makeMap = function(){
+        const htmlMap = document.getElementById('testmap');
+        const duckMap = [];
+
+        for (let i=0; i<mapSize; i++){
+            const htmlRow = createTagWithClass("div", "row row" + i);
+            const duckRow = [];
+
+            for (let j=0; j<mapSize; j++){
+                const htmlCol = createTagWithClass("p", "col col" + j);
+                htmlRow.appendChild(htmlCol);
+                const duckCol = {"cell":new Cell(), "dom":htmlCol};
+                duckRow.push(duckCol);
+            }
+            htmlMap.appendChild(htmlRow);
+        }
     }
 
     return {drawMapOutline};
 }
 
-const duckTravleMap = DuckTravleMap(5);
-duckTravleMap.drawMapOutline();
+const duckTravelMap = DuckTravelMap(5);
+duckTravelMap.drawMapOutline();
 
 
 
