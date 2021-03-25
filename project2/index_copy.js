@@ -212,6 +212,71 @@ const gameControl = function(htmlMapElement, htmlScoreElement, htmlModal){
 
 
 
+// makeCell을 생성자 함수로 만드는 건 어떨까?
+const makeCell = function(){
+    const cell = {
+        visitedTime: 0,
+        cellType: 'bush',
+    }
+    return cell;
+}
+
+// cell 자체에 isVisited flag를 넣는 건 어떨까?
+const isVisited = function(visitedTime){
+    if (visitedTime == 0){
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+// textSet을 따로 분리해야 할까?
+// isCurrentLocation 함수를 만들어야 할까?
+const getText = function(cell, isCurrentLocation){
+    const textSet = {
+        current:'A',
+        visited:'#',
+        bush:','
+    };
+
+    let text = ' ';
+    if (isCurrentLocation){
+        text = textSet["current"];
+    }
+    else if (isVisited(cell)){
+        text = textSet["visited"];
+    }
+    else {
+        text = textSet[cell.cellType];
+    }
+    return text;
+}
+
+// getColorStage를 따로 분리해야 할까?
+const getColorStage = function(currentTime, visitedTime){
+    let colorStage = 0;
+    if (Math.abs(currentTime - visitedTime) < 5){
+        colorStage = currentTime - visitedTime;
+    }
+    return colorStage;
+}
+
+const getColor = function(cell, currentTime){
+    let color = 0;
+    if (isVisited(cell)){
+        // color = getColorStage(currentTime, cell.visitedTime);
+        let timePassed = Math.abs(currentTime - visitedTime);
+        if (timePassed <= 4){
+            color = timePassed;
+        }
+    }
+    return color;
+}
+
+
+
+
 // Add HTML elements for duck map on index.html
 const makeMapOntoHTML = function(mapSize){
 
