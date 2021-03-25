@@ -16,7 +16,7 @@ const cellConstructor = function(){
     }
     
     Cell.prototype.colorStageInfo = {
-        numColorStage: 4,
+        numColorStage: 5,
         highestWhiteValue: 211,
     }
     
@@ -63,19 +63,22 @@ const cellConstructor = function(){
     }
     
     // getColorStage를 getColor랑 합치는 게 나을까?
-    Cell.prototype.getColorStage = function(currentTime){
-        let cellColorStage = 0;
-        const timePassed = currentTime - this.visitedTime;
-        if (timePassed <= this.colorStageInfo.numColorStage){
-            cellColorStage = this.colorStageInfo.numColorStage - timePassed;
-        }
-        return cellColorStage;
-    }
+    // Cell.prototype.getColorStage = function(currentTime){
+    //     let cellColorStage = 0;
+    //     const timePassed = currentTime - this.visitedTime;
+    //     if (timePassed <= this.colorStageInfo.numColorStage){
+    //         cellColorStage = this.colorStageInfo.numColorStage - timePassed;
+    //     }
+    //     return cellColorStage;
+    // }
     
     Cell.prototype.getColor = function(currentTime){
         let cellColorStage = 0;
         if (this.isVisited()){
-            cellColorStage = this.getColorStage(currentTime, this.colorStageInfo);
+            const timePassed = currentTime - this.visitedTime;
+            if (timePassed <= this.colorStageInfo.numColorStage){
+                cellColorStage = this.colorStageInfo.numColorStage - timePassed;
+            }
         }
         return this.translateToRGB(cellColorStage, this.colorStageInfo);
     }
@@ -144,7 +147,6 @@ const DuckTravelMap = function(size = 7){
             for (let j=0; j<mapSize; j++){
                 const htmlCol = createTagWithClass("p", "col col" + j);
                 const duckCol = {"cell":new Cell(), "dom":htmlCol};
-                // htmlCol.innerHTML = "#";
                 htmlRow.appendChild(htmlCol);
                 duckRow.push(duckCol);
             }
@@ -161,34 +163,13 @@ const DuckTravelMap = function(size = 7){
 
 
 
-const gameControl = function(duckTravelMap){
+const gameControl = function(size = 7){
     
-    const mapSize = duckTravelMap.getSize();
-    const duckMap = duckTravelMap.makeMap();
-    let duckLocation = (function() {
-        const startPoint = Math.floor(mapSize / 2);
-        const totalStep = startPoint;
-        let duckX = Math.floor(Math.random() * mapSize);
-        let leftStep = totalStep - Math.abs(totalStep - duckX);
-        if(Math.random() > 0.5){
-            duckY = totalStep - leftStep;
-        }
-        else{
-            duckY = totalStep + leftStep;
-        }
-        return {x: duckX, y:duckY};
-    })();
-    let curLocation = (function() {
-        const startPoint = Math.floor(mapSize/2);
-        duckMap[startPoint][startPoint].cell.setVisited();
-        return {x: startPoint, y:startPoint};
-    })();
-    let currentTime = 0;
-
-    const updateCurLocation = function(newX, newY){
-        curLocation.x = newX;
-        curLocation.y = newY;
-    }
+    const mapSize = size;
+    let duckMap;
+    let duckLocation;
+    let curLocation;
+    let currentTime;
 
     const checkRange = function(x, y){
         if((x >= 0) && (x < mapSize) && (y >= 0) && (y < mapSize)){
@@ -197,6 +178,28 @@ const gameControl = function(duckTravelMap){
         else{
             return false;
         }
+    }
+
+    const updateCurLocation = function(newX, newY){
+        curLocation.x = newX;
+        curLocation.y = newY;
+    }
+
+    const getNewLocation = function(direction){
+        const buttonType ={
+            "up": (x, y) => {return [x-1, y]},
+            "down": (x, y) => {return [x+1, y]},
+            "left": (x, y) => {return [x, y-1]},
+            "right": (x, y) => {return [x, y+1]}
+        }
+
+        const{x, y} = curLocation;
+        const move = buttonType[direction];
+        return move(x, y);
+    }
+
+    const updateCurrentTime = function(){
+        currentTime++;
     }
 
     const updateCellState = function(curLocation, currentTime){
@@ -216,16 +219,7 @@ const gameControl = function(duckTravelMap){
         }
     }
 
-    const isEqualToDuckLocation = function(){
-        if((curLocation.x == duckLocation.x) && (curLocation.y == duckLocation.y)){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    const updateCell = function(dom, text, color){
+    const updateCellOnMap = function(dom, text, color){
         dom.innerText = text;
         dom.style.color = color;
     }
@@ -234,28 +228,11 @@ const gameControl = function(duckTravelMap){
         for (let i=0; i<mapSize; i++){
             for (let j=0; j<mapSize; j++){
                 const elem = duckMap[i][j];
-                const elemCell = elem.cell;
-                const elemDom = elem.dom;
-                const text = elemCell.getText(isCurrentLocation(i, j, curLocation));
-                const color = elemCell.getColor(currentTime);
-                updateCell(elemDom, text, color);
+                const text = elem.cell.getText(isCurrentLocation(i, j, curLocation));
+                const color = elem.cell.getColor(currentTime);
+                updateCellOnMap(elem.dom, text, color);
             }
         }
-    }
-
-
-    const clickButton = function(direction){
-        const button ={
-            "up": (x, y) => {return [x-1, y]},
-            "down": (x, y) => {return [x+1, y]},
-            "left": (x, y) => {return [x, y-1]},
-            "right": (x, y) => {return [x, y+1]}
-        }
-        return button[direction];
-    }
-
-    const updateCurrentTime = function(){
-        currentTime++;
     }
 
     const updateScore = function(){
@@ -263,15 +240,22 @@ const gameControl = function(duckTravelMap){
         score.innerText = "SCORE: " + currentTime;
     }
 
+    const isEqualToDuckLocation = function(){
+        if((curLocation.x == duckLocation.x) && (curLocation.y == duckLocation.y)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
     const callModal = function(){
         const modal_wrapper = document.querySelector('.modal-wrapper');
         modal_wrapper.style.display = 'flex';
     }
 
-    const buttonRoutine = function(direction){
-        const {x, y} = curLocation;
-        const move = clickButton(direction);
-        [newX, newY] = move(x, y);
+    const callRoutine = function(direction){
+        [newX, newY] = getNewLocation(direction);
         
         if (checkRange(newX, newY)){
             updateCurLocation(newX, newY);
@@ -285,39 +269,62 @@ const gameControl = function(duckTravelMap){
         }
     }
 
-    return {updateCurLocation, updateScore, updateMap, buttonRoutine};
+    const initDuckLocation = function(){
+        const startPoint = Math.floor(mapSize / 2);
+        const totalStep = startPoint;
+        let duckX = Math.floor(Math.random() * mapSize);
+        let leftStep = totalStep - Math.abs(totalStep - duckX);
+        if(Math.random() > 0.5){
+            duckY = totalStep - leftStep;
+        }
+        else{
+            duckY = totalStep + leftStep;
+        }
+        return {x: duckX, y:duckY};
+    }
+
+    const initCurLocation = function(){
+        const startPoint = Math.floor(mapSize/2);
+        duckMap[startPoint][startPoint].cell.setVisited();
+        return {x: startPoint, y:startPoint};
+    }
+
+    const initGame = function(){
+        const duckTravelMap = DuckTravelMap(mapSize);
+        duckMap = duckTravelMap.makeMap();
+        duckLocation = initDuckLocation();
+        curLocation = initCurLocation();
+        currentTime = 0;
+        updateScore();
+        updateMap();
+    }
+
+    return {callRoutine, initGame};
 }
 
-const duckTravelMap = DuckTravelMap(5);
-const gc = gameControl(duckTravelMap);
-gc.updateMap();
-gc.updateScore();
 
 
 
 
-const button_up = document.getElementById('button_up');
-const button_left = document.getElementById('button_left');
-const button_right = document.getElementById('button_right');
-const button_down = document.getElementById('button_down');
+/* Main */
+const game = gameControl(7);
+game.initGame();
+
+
+
+
+
+/* Set button operation */
+const buttonList = ['up', 'down', 'left', 'right'];
+for (let buttonType of buttonList){
+    const btn = document.getElementById('button_' + buttonType);
+    btn.onclick = () => {
+        console.log("click button " + buttonType);
+        game.callRoutine(buttonType);
+    }
+}
+
 const button_close = document.getElementById('close');
-
-button_up.onclick = () => {
-    gc.buttonRoutine("up");
-}
-
-button_left.onclick = () => {
-    gc.buttonRoutine("left");
-}
-
-button_right.onclick = () => {
-    gc.buttonRoutine("right");
-}
-
-button_down.onclick = () => {
-    gc.buttonRoutine("down");
-}
-
 button_close.onclick = () => {
     const modal_wrapper = document.querySelector('.modal-wrapper');
     modal_wrapper.style.display = 'none';
