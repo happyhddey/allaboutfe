@@ -98,6 +98,7 @@ console.log(cell.getColor(4));
 const DuckTravelMap = function(size = 7){
 
     const mapSize = size;
+    const Cell = cellConstructor();
 
     const createTagWithClass = function(tag, className){
         let newTag = document.createElement(tag);
@@ -156,11 +157,11 @@ const DuckTravelMap = function(size = 7){
         }
     }
 
-    return {drawMapOutline};
+    return {makeMap};
 }
 
 const duckTravelMap = DuckTravelMap(5);
-duckTravelMap.drawMapOutline();
+duckTravelMap.makeMap();
 
 
 
