@@ -88,6 +88,7 @@ const cellConstructor = function(){
 
 
 
+// css grid 사용해보기
 const DuckTravelMap = function(size = 7){
 
     const mapSize = size;
