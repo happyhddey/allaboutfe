@@ -95,7 +95,9 @@ console.log(cell.getColor(4));
 
 
 
-const DuckTravleMap = function(mapSize = 7){
+const DuckTravleMap = function(size = 7){
+
+    const mapSize = size;
 
     const createTagWithClass = function(tag, className){
         let newTag = document.createElement(tag);
@@ -103,15 +105,15 @@ const DuckTravleMap = function(mapSize = 7){
         return newTag;
     }
 
-    const drawMapOutline = function(mapSize){
+    const drawMapOutline = function(){
         const mapContainer = document.getElementById('testmap');
-
+        console.log(mapSize);
         for (let i=0; i<mapSize; i++){
             let ithRow = createTagWithClass("div", "row row" + i);
 
             for (let j=0; j<mapSize; j++){
                 let jthCol = createTagWithClass("p", "col col" + j);
-                // jthCol.innerHTML = "#";
+                jthCol.innerHTML = "#";
                 ithRow.appendChild(jthCol);
             }
             mapContainer.appendChild(ithRow);
@@ -154,10 +156,11 @@ const DuckTravleMap = function(mapSize = 7){
         return duckTravleMap;
     }
 
-    return makeMap();
+    return {drawMapOutline};
 }
 
-console.log(DuckTravleMap(5));
+const duckTravleMap = DuckTravleMap(5);
+duckTravleMap.drawMapOutline();
 
 
 
