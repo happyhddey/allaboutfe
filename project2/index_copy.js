@@ -78,8 +78,10 @@ const cellConstructor = function(){
     return Cell;
 }
 
-const State = cellConstructor();
-const cell = new State();
+
+/*
+const Cell = cellConstructor();
+const cell = new Cell();
 console.log(cell);
 console.log(cell.getText());
 console.log(cell.getColor());
@@ -87,17 +89,66 @@ cell.setVisitedTime(4);
 console.log(cell.getText(true));
 console.log(cell.getText(false));
 console.log(cell.getColor(4));
+*/
+
 
 
 
 
 const DuckTravleMap = function(mapSize = 7){
 
-    // new Cell
+    const createTagWithClass = function(tag, className){
+        let newTag = document.createElement(tag);
+        newTag.setAttribute("class", className);
+        return newTag;
+    }
+
+    const drawMapOutline = function(mapSize){
+        const mapContainer = document.getElementById('testmap');
+
+        for (let i=0; i<mapSize; i++){
+            let ithRow = createTagWithClass("div", "row row" + i);
+
+            for (let j=0; j<mapSize; j++){
+                let jthCol = createTagWithClass("p", "col col" + j);
+                // jthCol.innerHTML = "#";
+                ithRow.appendChild(jthCol);
+            }
+            mapContainer.appendChild(ithRow);
+        }
+    }
+
+    // const drawMapOutline2 = function(mapSize){
+
+    //     const testMap = document.getElementById('testmap');
+
+    //     for (let i=0; i<mapSize; i++){
+    //         let ithRow = document.createElement("div");
+    //         let rowText = "row row" + i;
+    //         ithRow.setAttribute("class", rowText);
+
+    //         for (let j=0; j<mapSize; j++){
+    //             let jthCol = document.createElement("p");
+    //             let colText = "col col" + j;
+    //             jthCol.setAttribute("class", colText);
+    //             jthCol.innerHTML = "#";
+    //             ithRow.appendChild(jthCol);
+    //         }
+
+    //         testMap.appendChild(ithRow);
+    //     }
+    // }
+
     const makeMap = function(){
         const duckTravleMap = [];
         for (let i=0; i<mapSize; i++){
-            const arr = Array.from({length: mapSize}, () => new State());
+            const arr = [];
+            let rowElements = document.getElementsByClassName("row" + i)[0];
+            for (let j=0; j<mapSize; j++){
+                let cell = new Cell();
+                let dom = rowElements.getElementsByClassName("col" + j)[0];
+                arr.push({"cell":cell, "dom":dom});
+            }
             duckTravleMap.push(arr);
         }
         return duckTravleMap;
@@ -106,42 +157,8 @@ const DuckTravleMap = function(mapSize = 7){
     return makeMap();
 }
 
-console.log(DuckTravleMap(3));
+console.log(DuckTravleMap(5));
 
-
-
-const duckTravle = function(){
-
-    let duckLocation = {x:0, y:0};
-    let curLocation = {x:0, y:0};
-    
-
-}
-
-
-
-// Add HTML elements for duck map on index.html
-const makeMapOntoHTML = function(mapSize){
-
-    const testMap = document.getElementById('testmap');
-
-    for (let i=0; i<mapSize; i++){
-        let ithRow = document.createElement("div");
-        let rowText = "row row" + i;
-        ithRow.setAttribute("class", rowText);
-
-        for (let j=0; j<mapSize; j++){
-            let jthCol = document.createElement("p");
-            let colText = "col col" + j;
-            jthCol.setAttribute("class", colText);
-            jthCol.innerHTML = ".";
-            ithRow.appendChild(jthCol);
-        }
-
-        testMap.appendChild(ithRow);
-    }
-}
-makeMapOntoHTML(5);
 
 
 
