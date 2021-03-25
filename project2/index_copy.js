@@ -36,7 +36,6 @@ const cellConstructor = function(){
         }
     }
     
-    // isCurrentLocation 함수를 만들어야 할까?
     Cell.prototype.getText = function(isCurrentLocation){
         const textSet = this.textSet;
         let text = ' ';
@@ -58,7 +57,7 @@ const cellConstructor = function(){
         return `rgb(${whiteValue}, ${whiteValue}, ${whiteValue})`
     }
     
-    // getColorStage를 따로 분리하는 게 나을까?
+    // getColorStage를 getColor랑 합치는 게 나을까?
     Cell.prototype.getColorStage = function(currentTime){
         let cellColorStage = 0;
         const timePassed = currentTime - this.visitedTime;
@@ -79,8 +78,8 @@ const cellConstructor = function(){
     return Cell;
 }
 
-const Cell = cellConstructor();
-const cell = new Cell();
+const State = cellConstructor();
+const cell = new State();
 console.log(cell);
 console.log(cell.getText());
 console.log(cell.getColor());
@@ -94,24 +93,20 @@ console.log(cell.getColor(4));
 
 const DuckTravleMap = function(mapSize = 7){
 
-    // makeCell을 생성자 함수로 만드는 건 어떨까?
-    const makeCell = function(){
-        const cell = {
-            visitedTime: 0,
-            cellType: 'bush',
-        }
-        return cell;
-    }
-
+    // new Cell
     const makeMap = function(){
+        const duckTravleMap = [];
         for (let i=0; i<mapSize; i++){
-            const arr = Array.from({length: mapSize}, () => makeCell());
+            const arr = Array.from({length: mapSize}, () => new State());
             duckTravleMap.push(arr);
         }
+        return duckTravleMap;
     }
 
     return makeMap();
 }
+
+console.log(DuckTravleMap(3));
 
 
 
@@ -139,7 +134,7 @@ const makeMapOntoHTML = function(mapSize){
             let jthCol = document.createElement("p");
             let colText = "col col" + j;
             jthCol.setAttribute("class", colText);
-            jthCol.innerHTML = "#";
+            jthCol.innerHTML = ".";
             ithRow.appendChild(jthCol);
         }
 

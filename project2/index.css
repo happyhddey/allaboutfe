@@ -74,6 +74,11 @@
     color: blue;
 }
 
+#testmap {
+    font-family: monospace;
+    font-size: 20px;
+}
+
 #testmap .row{
     justify-content: center;
     display: flex;
