@@ -1,279 +1,124 @@
-/*
-==해결해야 할 점==
-1. 코드 structure를 어떻게 만들면 좋을까?
-   현재는 map과 버튼 입력 받는 부분을 분리한 상태
-   그런데 꼭 나눠야할까 싶고, 만약 나눈다면 어떤 기준으로 나눌 것인지
-2. cell에 어떤 정보를 저장하면 좋을까?
-
-==발전시킬 점==
-1. 이동할 때 최근에 지나온 자리의 색깔을 더 진하게
-=> DOM을 이용하면 html 문서를 직접 편집할 수 있다고 함 (html 요소 변경)
-   map을 cell 단위로 나눈 것을 html에 추가하고, style을 바꿔주면 되지 않을까?
-2. 
-*/
-
-const MyMap = function(){
-
-    const myMap = [];
-    let mapSize = 0;
-
-    
-    const initBlock = function(){
-        const obj = {
-            type: 'bush',
-            duck: false,
-            developed: false
-        }
-        return obj;
-    }
-
-    const initMap = function(){
-        for(let i = 0; i < mapSize; i++){
-            const arr = Array.from({length: mapSize}, () => initBlock());
-            myMap.push(arr);
-        }
-    }
-    
-    const initDuckLocation = function(){
-        const startPoint = parseInt(mapSize / 2);
-        const totalStep = startPoint;
-        let duckX = Math.floor(Math.random() * mapSize);
-        let leftStep = totalStep - Math.abs(totalStep - duckX);
-        if(Math.random() > 0.5){
-            duckY = totalStep - leftStep;
-        }
-        else{
-            duckY = totalStep + leftStep;
-        }
-        myMap[duckX][duckY].duck = true;
-    }
-
-    const isDuckLocation = function(x, y){
-        return myMap[x][y].duck;
-    }
-    
-    const setMap = function(size = 25){
-        mapSize = size;
-        initMap();
-        initDuckLocation();
-    }
-
-    const checkRange = function(x, y){
-        if((x >= 0) && (x < mapSize) && (y >= 0) && (y < mapSize)){
-            //console.log('right range');
-            return true;
-        }
-        else{
-            //console.log('wrong range');
-            return false;
-        }
-    }
-
-    const changeState = function(x, y){
-        const isRightRange = checkRange(x, y);
-        if(isRightRange){
-            myMap[x][y].developed = true;
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    const isMyLocation = function(curX, curY, myLocation){
-        const {x, y} = myLocation;
-        return (curX == x) && (curY == y);
-    }
-
-    const isDeveloped = function(block){
-        return block.developed;
-    }
-
-    const isType = function(block){
-        if (block.type == "bush"){
-            return ".";
-        }
-        else if(block.type == "lake"){
-            return "~";
-        }
-    }
-
-    const getMapText = function(myLocation){
-        let mapText = ""
-        for(let i=0; i<mapSize; i++){
-            let mapTextLine = ""
-            for(let j=0; j<mapSize; j++){
-                const curBlock = myMap[i][j];
-                if(isMyLocation(i, j, myLocation)){
-                    mapTextLine += "A";
-                }
-                else if (isDeveloped(curBlock)){
-                    mapTextLine += "#";
-                }
-                else{
-                    mapTextLine += isType(curBlock);
-                }
-            }
-            mapText = mapText + mapTextLine + "\n";
-        }
-        return mapText;
-    }
-
-    const getMapConsole = function(){
-        console.log(myMap);
-    }
-
-    return {setMap, isDuckLocation, changeState, getMapText, getMapConsole};
+const Cell = function(){
+    this.visitedTime = 0;
+    this.cellType = 'bush';
 }
 
-
-
-const gameControl = function(htmlMapElement, htmlScoreElement, htmlModal){
-
-    const mapElement = htmlMapElement;
-    const scoreElement = htmlScoreElement;
-    const modal_wrapper = htmlModal;
-    const game = MyMap();
-    let myLocation = {x:undefined, y:undefined};
-    let score = 0;
-
-
-    const updateMyLocation = function(curX, curY){
-        myLocation.x = curX;
-        myLocation.y = curY;
-    }
-
-    const initMyLocation = function(mapSize){
-        const startPoint = parseInt(mapSize/2);
-        updateMyLocation(startPoint, startPoint);
-        // 왜 여기는 비구조화 할당이 안 되냐
-        game.changeState(myLocation.x, myLocation.y);
-    }
-
-    const initScore = function(){
-        scoreElement.innerText = "SCORE: " + score;
-    }
-
-    const updateScore = function(){
-        score++;
-        scoreElement.innerText = "SCORE: " + score;
-    }
-
-    const updateMapText = function(){
-        mapElement.innerText = game.getMapText(myLocation);
-    }
-
-    const setGame = function(size){
-        game.setMap(size);
-        initMyLocation(size);
-        initScore();
-        updateMapText(myLocation);
-    }
-
-    const moveStepTo = function(nextX, nextY){
-        const isChanged = game.changeState(nextX, nextY);
-        if(isChanged){
-            updateMyLocation(nextX, nextY);
-            updateScore();
-            if(game.isDuckLocation(nextX, nextY)){
-                modal_wrapper.style.display = 'flex';
-            }
-        }
-        updateMapText(myLocation);
-        //console.log(getLocation());
-    }
-
-    const up = function(){
-        const {x, y} = myLocation;
-        moveStepTo(x-1, y);
-    }
-
-    const down = function(){
-        const {x, y} = myLocation;
-        moveStepTo(x+1, y);
-    }
-
-    const left = function(){
-        const {x, y} = myLocation;
-        moveStepTo(x, y-1);
-    }
-
-    const right = function(){
-        const {x, y} = myLocation;
-        moveStepTo(x, y+1);
-    }
-
-    const getLocation = function(){
-        return myLocation;
-    }
-
-    return {setGame, updateMapText, up, down, left, right, getLocation};
+Cell.prototype.textSet = {
+    current:'A',
+    visited:'#',
+    bush:','
 }
 
-
-
-// makeCell을 생성자 함수로 만드는 건 어떨까?
-const makeCell = function(){
-    const cell = {
-        visitedTime: 0,
-        cellType: 'bush',
-    }
-    return cell;
+Cell.prototype.colorStageInfo = {
+    numColorStage: 4,
+    highestWhiteValue: 211,
 }
 
-// cell 자체에 isVisited flag를 넣는 건 어떨까?
-const isVisited = function(visitedTime){
-    if (visitedTime == 0){
-        return false;
-    }
-    else{
+Cell.prototype.setVisitedTime = function(currentTime){
+    this.visitedTime = currentTime;
+}
+
+Cell.prototype.setCellType = function(type){
+    this.cellType = type;
+}
+
+Cell.prototype.isVisited = function(){
+    if (this.visitedTime != 0){
         return true;
     }
+    else{
+        return false;
+    }
 }
 
-// textSet을 따로 분리해야 할까?
 // isCurrentLocation 함수를 만들어야 할까?
-const getText = function(cell, isCurrentLocation){
-    const textSet = {
-        current:'A',
-        visited:'#',
-        bush:','
-    };
-
+Cell.prototype.getText = function(isCurrentLocation){
+    const textSet = this.textSet;
     let text = ' ';
     if (isCurrentLocation){
         text = textSet["current"];
     }
-    else if (isVisited(cell)){
+    else if (this.isVisited()){
         text = textSet["visited"];
     }
     else {
-        text = textSet[cell.cellType];
+        text = textSet[this.cellType];
     }
     return text;
 }
 
-// getColorStage를 따로 분리해야 할까?
-const getColorStage = function(currentTime, visitedTime){
-    let colorStage = 0;
-    if (Math.abs(currentTime - visitedTime) < 5){
-        colorStage = currentTime - visitedTime;
-    }
-    return colorStage;
+Cell.prototype.translateToRGB = function(cellColorStage){
+    const {numColorStage, highestWhiteValue} = this.colorStageInfo;
+    const whiteValue = (highestWhiteValue / numColorStage) * cellColorStage;
+    return `rgb(${whiteValue}, ${whiteValue}, ${whiteValue})`
 }
 
-const getColor = function(cell, currentTime){
-    let color = 0;
-    if (isVisited(cell)){
-        // color = getColorStage(currentTime, cell.visitedTime);
-        let timePassed = Math.abs(currentTime - visitedTime);
-        if (timePassed <= 4){
-            color = timePassed;
+// getColorStage를 따로 분리하는 게 나을까?
+Cell.prototype.getColorStage = function(currentTime){
+    let cellColorStage = 0;
+    const timePassed = currentTime - this.visitedTime;
+    if (timePassed <= this.colorStageInfo.numColorStage){
+        cellColorStage = this.colorStageInfo.numColorStage - timePassed;
+    }
+    return cellColorStage;
+}
+
+Cell.prototype.getColor = function(currentTime){
+    let cellColorStage = 0;
+    if (this.isVisited()){
+        cellColorStage = this.getColorStage(currentTime, this.colorStageInfo);
+    }
+    return this.translateToRGB(cellColorStage, this.colorStageInfo);
+}
+
+// const cell = new Cell();
+// console.log(cell);
+// console.log(cell.getText());
+// console.log(cell.getColor());
+// cell.setVisitedTime(4);
+// console.log(cell.getText(true));
+// console.log(cell.getText(false));
+// console.log(cell.getColor(4));
+
+
+
+
+const DuckTravleMap = function(mapSize = 7){
+
+    // makeCell을 생성자 함수로 만드는 건 어떨까?
+    const makeCell = function(){
+        const cell = {
+            visitedTime: 0,
+            cellType: 'bush',
+        }
+        return cell;
+    }
+
+    const initialize = function(){
+        for (let i=0; i<mapSize; i++){
+            const arr = Array.from({length: mapSize}, () => makeCell());
+            duckTravleMap.push(arr);
         }
     }
-    return color;
+
+    const duckTravleMap = initialize();
+
+
+    
+
+
+    return duckTravleMap;
 }
 
+
+
+const duckTravle = function(){
+
+    let duckLocation = {x:0, y:0};
+    let curLocation = {x:0, y:0};
+    
+
+}
 
 
 
@@ -298,7 +143,7 @@ const makeMapOntoHTML = function(mapSize){
         testMap.appendChild(ithRow);
     }
 }
-//makeMapOntoHTML(5);
+makeMapOntoHTML(5);
 
 
 
@@ -306,12 +151,10 @@ const makeMapOntoHTML = function(mapSize){
 
 
 
-
+/*
 const map = document.getElementById('map');
 const score = document.getElementById('score');
 const modal_wrapper = document.querySelector('.modal-wrapper');
-const game = gameControl(map, score, modal_wrapper);
-game.setGame(7);
 
 const button_up = document.getElementById('button_up');
 const button_left = document.getElementById('button_left');
@@ -320,23 +163,8 @@ const button_down = document.getElementById('button_down');
 
 const button_close = document.getElementById('close');
 
-button_up.onclick = () => {
-    game.up();
-}
-
-button_left.onclick = () => {
-    game.left();
-}
-
-button_right.onclick = () => {
-    game.right();
-}
-
-button_down.onclick = () => {
-    game.down();
-}
-
 button_close.onclick = () => {
     modal_wrapper.style.display = 'none';
     document.location.reload();
 }
+*/
