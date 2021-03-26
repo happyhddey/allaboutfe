@@ -64,8 +64,9 @@ const DuckTravelModel = function(size = 7){
 
 /* Controller: ModelViewIntermediator */
 
-const ModelViewIntermediator = function(){
-    this.duckMap = [];
+const ModelViewIntermediator = function(size = 7){
+
+    this.duckTravel = new DuckTravelModel(size);
 
     this.initMapView = function(){
 
@@ -79,8 +80,14 @@ const ModelViewIntermediator = function(){
 
     }
 
-    this.directionButtonAction = function(){
-
+    this.setDirectionButtonAction = function(){
+        const directions = ['up', 'down', 'left', 'right'];
+        for (let direction of directions){
+            const button = document.getElementById('button_' + direction);
+            button.onclick = () => {
+                this.duckTravel.moveDuck(direction);
+            }
+        }
     }
 
     this.popSuccessModal = function(){
