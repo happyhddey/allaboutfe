@@ -43,22 +43,24 @@ const DuckTravelModel = function(size = 7){
 
     }
 
-    this.computeNewLocation = function(){
-
+    this.getNewLocation = function(direction){
+        
     }
 
     this.checkRange = function(){
 
     }
 
-    this.moveDuck = function(){
-
+    this.moveDuck = function(direction){
+        const newLocation = this.getNewLocation(direction);
+        this.setCurLocation(newLocation);
     }
 
     this.isSameLocation = function(){
         const {duckX, duckY} = this.duckLocation;
         const {curX, curY} = this.curLocation;
         if((duckX === curX) && (duckY == curY)){
+            // TODO: Add nofitying function
             return true;
         }
         else{
