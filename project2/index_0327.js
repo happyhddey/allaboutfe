@@ -60,3 +60,34 @@ const DuckTravelModel = function(size = 7){
     }
 }
 
+
+
+/* Controller: ModelViewIntermediator */
+
+const ModelViewIntermediator = function(){
+    this.duckMap = [];
+
+    this.initMapView = function(){
+
+    }
+
+    this.drawScore = function(){
+
+    }
+
+    this.drawMap = function(){
+
+    }
+
+    this.directionButtonAction = function(){
+
+    }
+
+    this.popSuccessModal = function(){
+
+    }
+
+    this.closeButtonAction = function(){
+
+    }
+}
