@@ -91,7 +91,8 @@ const ModelViewIntermediator = function(size = 7){
     }
 
     this.popSuccessModal = function(){
-
+        const modalWrapper = document.querySelector('.modal_wrapper');
+        modalWrapper.style.directions = 'flex';
     }
 
     this.closeButtonAction = function(){
