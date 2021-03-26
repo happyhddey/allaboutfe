@@ -96,6 +96,11 @@ const ModelViewIntermediator = function(size = 7){
     }
 
     this.closeButtonAction = function(){
-
+        const buttonClose = document.getElementsById('close');
+        buttonClose.onclick = () => {
+            // const modalWrapper = document.querySelector('.modal_wrapper');
+            // modalWrapper.style.directions = 'none';
+            document.location.reload();
+        }
     }
 }
