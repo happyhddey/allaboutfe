@@ -44,7 +44,15 @@ const DuckTravelModel = function(size = 7){
     }
 
     this.getNewLocation = function(direction){
-        
+        const moveOn ={
+            "up": (x, y) => {return {"newX":x-1, "newY":y}},
+            "down": (x, y) => {return {"newX":x+1, "newY":y}},
+            "left": (x, y) => {return {"newX":x, "newY":y-1}},
+            "right": (x, y) => {return {"newX":x, "newY":y+1}}
+        }
+        const move = moveOn[direction];
+        const {curX, curY} = this.curLocation();
+        return move(curX, curY);
     }
 
     this.checkRange = function(){
@@ -52,8 +60,8 @@ const DuckTravelModel = function(size = 7){
     }
 
     this.moveDuck = function(direction){
-        const newLocation = this.getNewLocation(direction);
-        this.setCurLocation(newLocation);
+        const {newX, newY} = this.getNewLocation(direction);
+        this.setCurLocation({"curX":newX, "curY":newY});
     }
 
     this.isSameLocation = function(){
