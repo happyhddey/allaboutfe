@@ -3,8 +3,8 @@
 const DuckTravelModel = function(size = 7){
     this.mapSize = size;
     this.duckMap = [];
-    this.duckLocation = {x:0, y:0};
-    this.curLocation = {x:0, y:0};
+    this.duckLocation = {duckX:0, duckY:0};
+    this.curLocation = {curX:0, curY:0};
     this.currentTime = 0;
 
     this.initDuckLocation = function(){
@@ -56,7 +56,14 @@ const DuckTravelModel = function(size = 7){
     }
 
     this.isSameLocation = function(){
-
+        const {duckX, duckY} = this.duckLocation;
+        const {curX, curY} = this.curLocation;
+        if((duckX === curX) && (duckY == curY)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
 
