@@ -56,7 +56,7 @@ const DuckTravelModel = function(size = 7){
     }
 
     this.checkRange = function(){
-
+        
     }
 
     this.moveDuck = function(direction){
