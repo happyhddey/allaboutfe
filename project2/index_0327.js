@@ -23,6 +23,10 @@ const DuckTravelModel = function(size = 7){
 
     }
 
+    this.setCurrentTime = function(){
+
+    }
+
     this.getDuckMap = function(){
 
     }
