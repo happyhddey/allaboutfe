@@ -1,4 +1,4 @@
-/* DuckTravelModel */
+/* Model: DuckTravelModel */
 
 const DuckTravelModel = function(size = 7){
     this.mapSize = size;
@@ -24,7 +24,7 @@ const DuckTravelModel = function(size = 7){
     }
 
     this.getDuckMap = function(){
-        
+
     }
 
     this.getDuckLocation = function(){
@@ -32,6 +32,10 @@ const DuckTravelModel = function(size = 7){
     }
     
     this.getCurLocation = function(){
+
+    }
+
+    this.getCurrentTime = function(){
 
     }
 
@@ -51,3 +55,4 @@ const DuckTravelModel = function(size = 7){
 
     }
 }
+
