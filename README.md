@@ -17,6 +17,10 @@ Using `transition` in D3.js makes animation smooth.
 up-to-date  
 <br>
 
+### Project 3: Distancing Card Game (04.09-04.13)
+up-to-date  
+<br>
+
 
 ## See More
 This repository is published to Github Pages.  
