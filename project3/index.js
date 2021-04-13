@@ -56,17 +56,16 @@ Player.prototype.getScore = function(){
 Player.prototype.getValue = function(cardName){
     return this.deck[cardName].getValue();
 }
-Player.prototype.updateScore = function(selectedCardValue, standardCardValue){
-    this.score += Math.abs(selectedCardValue - standardCardValue);
-    return this.score;
+Player.prototype.updateScore = function(value){
+    this.score += value;
 }
-Player.prototype.updateCard = function(cardName){
+Player.prototype.updateCard = function(cardName, score){
     const card = this.deck[cardName];
     if (card.isFront()){
         card.flipCard();
+        this.updateScore(score);
         return true;
-    }
-    else{
+    } else{
         return false;
     }
 }
@@ -100,19 +99,8 @@ DistancingCardGameModel.prototype.getCardNameList = function(){
 DistancingCardGameModel.prototype.updateStandardCard = function(value){
     this.standardCardValue = value;
 }
-DistancingCardGameModel.prototype.userTurn = function(selectedCard){
-    if (this.USER.updateCard(selectedCard)){
-        const selectedCardValue = this.USER.getValue(selectedCard);
-        this.USER.updateScore(selectedCardValue, this.standardCardValue);
-        this.updateStandardCard(selectedCardValue);
-
-        this.Controller.notifyingUserCardFlip(selectedCard);
-        this.Controller.notifyingUserScoreChange(this.USER.getScore());
-        this.Controller.notifyingStandardCardChange(selectedCard);
-        return true;
-    } else{
-        return false;
-    }
+DistancingCardGameModel.prototype.calculateScore = function(selectedCardValue){
+    return Math.abs(this.standardCardValue - selectedCardValue);
 }
 DistancingCardGameModel.prototype.getByMax = function(player, curCardValue){
     let bestProfit = -100, maxCardName = "";
@@ -135,7 +123,12 @@ DistancingCardGameModel.prototype.getByMiniMax = function(player, curCardValue){
         const card = player.deck[cardName];
         if (!card.isException() && card.isFront()){
             const profit = Math.abs(card.getValue() - curCardValue);
-            const [none, loss] = this.getByMax(this.USER, card.getValue());
+            let none, loss;
+            if (player === this.USER){
+                [none, loss] = this.getByMax(this.AI, card.getValue());
+            }else{
+                [none, loss] = this.getByMax(this.USER, card.getValue());
+            }
             if (profit - loss > bestProfit){
                 bestProfit = profit - loss;
                 maxCardName = card.getName();
@@ -144,21 +137,54 @@ DistancingCardGameModel.prototype.getByMiniMax = function(player, curCardValue){
     }
     return [maxCardName, bestProfit];
 }
+DistancingCardGameModel.prototype.getByThree = function(player, curCardValue){
+    let bestProfit = -100, maxCardName = "";
+    for (cardName in player.deck){
+        const card = player.deck[cardName];
+        if (!card.isException() && card.isFront()){
+            card.setException();
+            const profit = Math.abs(card.getValue() - curCardValue);
+            let none, loss;
+            if (player === this.USER){
+                [none, loss] = this.getByMiniMax(this.AI, card.getValue());
+            }else{
+                [none, loss] = this.getByMiniMax(this.USER, card.getValue());
+            }
+            if (profit - loss > bestProfit){
+                bestProfit = profit - loss;
+                maxCardName = card.getName();
+            }
+            card.resetException();
+        }
+    }
+    return [maxCardName, bestProfit];
+}
 DistancingCardGameModel.prototype.aiSelectCard = function(){
-    const [cardName, profit] = this.getByMiniMax(this.AI, this.standardCardValue);
+    const [cardName, profit] = this.getByThree(this.AI, this.standardCardValue);
     return cardName;
 }
 DistancingCardGameModel.prototype.aiTurn = function(){
     const selectedCard = this.aiSelectCard();
-    this.AI.updateCard(selectedCard);
-
     const selectedCardValue = this.AI.getValue(selectedCard);
-    this.AI.updateScore(selectedCardValue, this.standardCardValue);
-    this.updateStandardCard(selectedCardValue);
-
-    this.Controller.notifyingAiCardFlip(selectedCard);
-    this.Controller.notifyingAiScoreChange(this.AI.getScore());
-    this.Controller.notifyingStandardCardChange(selectedCard);
+    const expectedScore = this.calculateScore(selectedCardValue);
+    if (this.AI.updateCard(selectedCard, expectedScore)){
+        this.updateStandardCard(selectedCardValue);
+        this.Controller.notifyingChangeAfterAiTurn(selectedCard, this.AI.getScore());
+        return true;
+    } else{
+        return false;
+    }
+}
+DistancingCardGameModel.prototype.userTurn = function(selectedCard){
+    const selectedCardValue = this.USER.getValue(selectedCard);
+    const expectedScore = this.calculateScore(selectedCardValue);
+    if (this.USER.updateCard(selectedCard, expectedScore)){
+        this.updateStandardCard(selectedCardValue);
+        this.Controller.notifyingChangeAfterUserTurn(selectedCard, this.USER.getScore());
+        return true;
+    } else{
+        return false;
+    }
 }
 DistancingCardGameModel.prototype.isOver = function(){
     return this.AI.isOver() && this.USER.isOver();
@@ -177,7 +203,6 @@ DistancingCardGameModel.prototype.gameOverMessage = function(userScore, aiScore)
 }
 DistancingCardGameModel.prototype.turn = function(cardName){
     if (this.userTurn(cardName)){
-        
         setTimeout(() => {
             this.aiTurn();
             if(this.isOver()){
@@ -339,6 +364,16 @@ Controller.prototype.notifyingUserScoreChange = function(userScore){
 }
 Controller.prototype.notifyingAiScoreChange = function(aiScore){
     this.View.setAiScore(aiScore);
+}
+Controller.prototype.notifyingChangeAfterAiTurn = function(selectedCard, score){
+    this.notifyingAiScoreChange(score);
+    this.notifyingAiCardFlip(selectedCard);
+    this.notifyingStandardCardChange(selectedCard);
+}
+Controller.prototype.notifyingChangeAfterUserTurn = function(selectedCard, score){
+    this.notifyingUserScoreChange(score);
+    this.notifyingUserCardFlip(selectedCard);
+    this.notifyingStandardCardChange(selectedCard);
 }
 Controller.prototype.notifyingGameOver = function(winner, comment){
     this.View.popModal(winner, comment);
