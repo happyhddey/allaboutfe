@@ -84,8 +84,8 @@ Player.prototype.isOver = function(){
 
 
 // model
-const DistancingCardGameModel = function(c){
-    this.Controller = c;
+const DistancingCardGameModel = function(){
+    this.Controller;
 
     this.cardNameList = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
     this.USER = new Player(this.cardNameList);
@@ -102,42 +102,7 @@ DistancingCardGameModel.prototype.updateStandardCard = function(value){
 DistancingCardGameModel.prototype.calculateScore = function(selectedCardValue){
     return Math.abs(this.standardCardValue - selectedCardValue);
 }
-DistancingCardGameModel.prototype.getByMax = function(player, curCardValue){
-    let bestProfit = -100, maxCardName = "";
-
-    for (cardName in player.deck){
-        const card = player.deck[cardName];
-        if (!card.isException() && card.isFront()){
-            const profit = Math.abs(card.getValue() - curCardValue);
-            if (profit >= bestProfit){
-                bestProfit = profit;
-                maxCardName = card.getName();
-            }
-        }
-    }
-    return [maxCardName, bestProfit];
-}
-DistancingCardGameModel.prototype.getByMiniMax = function(player, curCardValue){
-    let bestProfit = -100, maxCardName = "";
-    for (cardName in player.deck){
-        const card = player.deck[cardName];
-        if (!card.isException() && card.isFront()){
-            const profit = Math.abs(card.getValue() - curCardValue);
-            let none, loss;
-            if (player === this.USER){
-                [none, loss] = this.getByMax(this.AI, card.getValue());
-            }else{
-                [none, loss] = this.getByMax(this.USER, card.getValue());
-            }
-            if (profit - loss > bestProfit){
-                bestProfit = profit - loss;
-                maxCardName = card.getName();
-            }
-        }
-    }
-    return [maxCardName, bestProfit];
-}
-DistancingCardGameModel.prototype.getByThree = function(player, curCardValue){
+DistancingCardGameModel.prototype.getByDepth = function(player, curCardValue, depth){
     let bestProfit = -100, maxCardName = "";
     for (cardName in player.deck){
         const card = player.deck[cardName];
@@ -145,10 +110,17 @@ DistancingCardGameModel.prototype.getByThree = function(player, curCardValue){
             card.setException();
             const profit = Math.abs(card.getValue() - curCardValue);
             let none, loss;
-            if (player === this.USER){
-                [none, loss] = this.getByMiniMax(this.AI, card.getValue());
+            if(depth > 0){
+                if (player === this.USER){
+                    [none, loss] = this.getByDepth(this.AI, card.getValue(), depth-1);
+                }else if (player === this.AI){
+                    [none, loss] = this.getByDepth(this.USER, card.getValue(), depth-1);
+                }
+                else{
+                    console.error("player error");
+                }
             }else{
-                [none, loss] = this.getByMiniMax(this.USER, card.getValue());
+                loss = 0;
             }
             if (profit - loss > bestProfit){
                 bestProfit = profit - loss;
@@ -160,7 +132,7 @@ DistancingCardGameModel.prototype.getByThree = function(player, curCardValue){
     return [maxCardName, bestProfit];
 }
 DistancingCardGameModel.prototype.aiSelectCard = function(){
-    const [cardName, profit] = this.getByThree(this.AI, this.standardCardValue);
+    const [cardName, profit] = this.getByDepth(this.AI, this.standardCardValue, 5);
     return cardName;
 }
 DistancingCardGameModel.prototype.aiTurn = function(){
@@ -213,6 +185,9 @@ DistancingCardGameModel.prototype.turn = function(cardName){
         
     }
 }
+DistancingCardGameModel.prototype.setController = function(controller){
+    this.Controller = controller;
+}
 
 
 
@@ -221,8 +196,8 @@ DistancingCardGameModel.prototype.turn = function(cardName){
 
 /* view */
 
-const View = function(c){
-    this.Controller = c;
+const View = function( ){
+    this.Controller;
 
     this.cardNameList;
     this.head = "front";
@@ -289,7 +264,6 @@ View.prototype.setAction = function(cardType){
         const cardClassName = this.getCardClassName(cardType, cardName);
         const card = document.getElementsByClassName(cardClassName)[0];
         card.onclick = () => {
-            //console.log("Select " + cardType + " Card: " + cardName);
             this.Controller.notifyingClick(cardName);
         }
     }
@@ -322,22 +296,21 @@ View.prototype.closeModal = function(){
         document.location.reload();
     }
 }
+View.prototype.setController = function(controller){
+    this.Controller = controller;
+}
 
 
 
 
 
 /* controller */
-const Controller = function(ai, user){
+const Controller = function(ai, user, model, view){
     this.AI = ai;
     this.USER = user;
-
-    this.Model;
-    this.View;
-}
-Controller.prototype.setModelView = function(model, view){
     this.Model = model;
     this.View = view;
+
     const cardNameList = this.Model.getCardNameList();
     const standardCardName = this.Model.standardCardName;
     const aiScore = this.Model.AI.getScore();
@@ -380,10 +353,11 @@ Controller.prototype.notifyingGameOver = function(winner, comment){
     this.View.closeModal();
 }
 
-const c = new Controller("ai", "user");
-const m = new DistancingCardGameModel(c);
-const v = new View(c);
-c.setModelView(m, v);
+const distancingCardGameModel = new DistancingCardGameModel();
+const distancingCardGameView = new View();
+const modelViewController = new Controller("ai", "user", distancingCardGameModel, distancingCardGameView);
+distancingCardGameModel.setController(modelViewController);
+distancingCardGameView.setController(modelViewController);
 
 
 
