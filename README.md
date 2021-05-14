@@ -58,6 +58,6 @@ Back-End 개발자와 협업 중이며, 추후 서버와 연동 예정
 
 ## See More
 This repository is published to Github Pages.  
-Please visit [HERE](https://happyhddey.github.io/allaboutfe/).  
+Please visit [HERE](https://happyhddey.github.io/allaboutfe/index.html).  
 <br>
 <br>
