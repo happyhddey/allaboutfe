@@ -11,10 +11,10 @@
     + [Description](#Description)
     + [Index](#Index)
 + [Projects](#Projects)
-    + [Project 1: Solar System](#Project-1:-Solar-System)
-    + [Project 2: Find Duck](#Project-2:-Find-Duck)
-    + [Project 3: Distancing Card Game](#Project-3:-Distancing-Card-Game)
-    + [Project 4: Movie by HashTag](#Project-4:-Movie-by-HashTag)
+    + [Project 1: Solar System](#project-1:-solar-system)
+    + [Project 2: Find Duck](#project-2:-find-duck)
+    + [Project 3: Distancing Card Game](#project-3:-distancing-card-game)
+    + [Project 4: Movie by HashTag](#project-4:-movie-by-hashtag)
     + [See More](#See-More)  
 <br>
 <br>
