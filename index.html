@@ -4,42 +4,71 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JS Project</title>
-    <link rel="stylesheet" href="./index.css">
-</head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic|Nanum+Myeongjo&display=swap&subset=korean" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato" type='text/css'>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bricklayer/0.4.2/bricklayer.min.css">
+    <link rel="stylesheet" href="./src/css/index.css">
+    <title>happyhddey's portpolio</title>
 <body>
     <header>
-        <h1>Welcome to happyhddey's Everyweek Project</h1>
+        <h1>#Front-End<br>#Portpolio<br>#happyhddey</h1>
     </header>
-    
-    <div class="projects_container">
-
-        <div class="project num1">
-            <h2>Project 1: Solar System</h2>
-            <p>Using D3.js lib, draw eight planets and rearrange them in specific order: distance from the sun, alphabet, size, weight.</p>
-            <a href="./project1/index.html">Solar System</a>
+    <div class="bricklayer">
+        <div class="project">
+            <h2 class="title">Project 1: Solar System</h2>
+            <hr>
+            <div class="image-width"><img src="./src/img/SolarSystem.gif" alt="Solar System" loading="lazy"></div>
+            <div class="description">수금지화목토천혜! D3.js 라이브러리로 그린 태양계 행성들입니다. 버튼을 클릭하여 행성들을 정렬할 수 있습니다. 첫 JavaScript 프로젝트입니다. (개발 기간: 2021.03.17 ~ 2021.03.19)</div>
+            <div class="hashtag-container">
+                <button class="hashtag"><a href="./project1/index.html">#LINK</a></button>
+                <button class="hashtag">#태양계</button>
+                <button class="hashtag">#D3.js</button>
+                <button class="hashtag">#첫프로젝트</button>
+            </div>
         </div>
-
-        <div class="project num2">
-            <h2>Project 2: Find Duck</h2>
-            <p>Click button, find hidden duck! Your step will be counted as score. I'm now refactoring this project.</p>
-            <a href="./project2/index_0315.html">Find Duck 2.0</a>
-            <a href="./project2/index_0326.html">Find Duck 2.1</a>
+        <div class="project">
+            <h2 class="title">Project 2: Find Duck</h2>
+            <hr>
+            <div class="image-height"><img src="./src/img/FindDuck.gif" alt="Solar System" loading="lazy"></div>
+            <div class="description">오리를 찾아라~ 맵을 돌아다니며 오리를 찾는 게임입니다. 한 번 지나간 자리는 #으로 표시됩니다. version 2.1 에서는 다녀간 자리의 색깔이 점점 연해집니다. 가막못 오리들과 A Dark Night 게임에서 아이디어를 얻었습니다. (개발 기간: 2021.03.15 ~ )</div>
+            <div class="hashtag-container">
+                <button class="hashtag"><a href="./project2/index_0315.html">#LINK_2.0</a></button>
+                <button class="hashtag"><a href="./project2/index_0326.html">#LINK_2.1</a></button>
+                <button class="hashtag">#오리찾기</button>
+                <button class="hashtag">#ADarkNight</button>
+                <button class="hashtag">#가막못오리들</button>
+            </div>
         </div>
-
-        <div class="project num3">
-            <h2>Project 3: Distancing Card Game</h2>
-            <p>Can you beat AI? Distance from the card in the middle of the board becomes your score. Please don't be depressed!</p>
-            <a href="./project3/index.html">Distancing Card Game 3</a>
+        <div class="project">
+            <h2 class="title">Project 3: Distancing Card Game</h2>
+            <hr>
+            <div class="image-width"><img src="./src/img/DistancingCardGame.gif" alt="Solar System" loading="lazy"></div>
+            <div class="description">AI를 이겨라! AI와 대결할 수 있는 간단한 카드게임, 거리두기 카드게임입니다. Player가 고른 카드와 가운데 놓여진 기준 카드의 거리가 점수가 됩니다. 놀랍게도 아직까지 AI를 이긴 사람이 없다고 합니다. 한 번 도전해보세요! (개발 기간: 2021.04.09 ~ 2021.04.13)</div>
+            <div class="hashtag-container">
+                <button class="hashtag"><a href="./project3/index.html">#LINK</a></button>
+                <button class="hashtag">#거리두기 카드게임</button>
+                <button class="hashtag">#SimpleAI</button>
+                <button class="hashtag">#승자는과연누구</button>
+            </div>
         </div>
-
-        <div class="project num4">
-            <h2>Project 4: Up-to-date</h2>
-            <p>Up-to-date</p>
-            <a href="./project4/index.html">Go to Project 4</a>
+        <div class="project">
+            <h2 class="title">Project 4: Movie by HashTag</h2>
+            <hr>
+            <div class="image-width"><img src="./src/img/MovieByHashTag.gif" alt="Solar System" loading="lazy"></div>
+            <div class="description">HashTag로 영화를 찾아보세요~ HashTag를 선택하면 영화를 추천해줍니다. 그런데 영화 추천 사이트라는 이름이 무색하게도 아직 영화 검색 기능이 없다고 합니다. 해시태그라도 골라볼까요? (개발 기간: 2021.05.13 ~ )</div>
+            <div class="hashtag-container">
+                <button class="hashtag"><a href="./project4/index.html">#LINK</a></button>
+                <button class="hashtag">#HashTag</button>
+                <button class="hashtag">#영화추천사이트</button>
+                <button class="hashtag">#그런데영화검색기능없음</button>
+                <button class="hashtag">#홍철없는홍철팀</button>
+            </div>
         </div>
-
     </div>
-    
+    <footer>
+        <p3>copytright ⓒ happyhddey</p3>
+    </footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bricklayer/0.4.2/bricklayer.min.js"></script></head>
+    <script src="./src/js/index.js"></script>
 </body>
 </html>

@@ -353,12 +353,9 @@ Controller.prototype.notifyingGameOver = function(winner, comment){
     this.View.closeModal();
 }
 
+
 const distancingCardGameModel = new DistancingCardGameModel();
 const distancingCardGameView = new View();
 const modelViewController = new Controller("ai", "user", distancingCardGameModel, distancingCardGameView);
 distancingCardGameModel.setController(modelViewController);
 distancingCardGameView.setController(modelViewController);
-
-
-
-
