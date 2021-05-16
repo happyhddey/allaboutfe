@@ -28,7 +28,6 @@
 버튼으로 행성 재정렬 가능: Size, Weight, Alphabetical Order, Distance from the Sun  
 `D3.js` 라이브러리 이용  
 개발 기간: 2021.03.17 ~ 2021.03.19  
-[LINK](https://happyhddey.github.io/allaboutfe/project1/index.html)  
 <br>
 <br>
 <br>
@@ -41,7 +40,6 @@ Simple Map을 돌아다니며 `오리`를 찾는 게임
 `Closure 활용`에 집중한 프로젝트  
 `MVC 패턴`을 적용하여 리팩토링 중  
 개발 기간: 2021.03.15 ~   
-[LINK](https://happyhddey.github.io/allaboutfe/project2/index_0326.html)  
 <br>
 <br>
 <br>
@@ -54,7 +52,6 @@ Player가 낸 카드와 가운데에 놓여진 기준 카드의 숫자 차이가
 Final Score는 점수의 누적합    
 `AI 구현`에 집중한 프로젝트  
 개발 기간: 2021.04.09 ~ 2021.04.13  
-[LINK](https://happyhddey.github.io/allaboutfe/project3/index.html)  
 <br>
 <br>
 <br>
@@ -66,7 +63,6 @@ Final Score는 점수의 누적합
 Back-End 개발자와 협업 중이며, 추후 서버와 연동 예정  
 `Class 활용`과 `transition`에 집중한 프로젝트  
 개발 기간: 2021.05.13 ~   
-[LINK](https://happyhddey.github.io/allaboutfe/project4/index.html)  
 <br>
 <br>
 <br>
