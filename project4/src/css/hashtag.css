@@ -1,0 +1,128 @@
+body{
+    font-family: 'Lato';
+}
+
+header{
+    margin-top: 3%;
+    text-align: center;
+}
+
+#search-container{
+    width: 60%;
+    margin: 0 auto;
+}
+
+.bar-container{
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+}
+
+.bar-input input{
+    height: 25px;
+    width: 90%;
+    border: 2px solid rgb(221, 221, 221);
+    border-radius: 10px;
+}
+
+.bar-input{
+    margin-right: 10px;
+}
+
+.tag-container{
+    margin:3% 0% 5% 0%;
+    border: 2px solid rgb(221, 221, 221);
+    border-radius: 10px;
+}
+
+.tag-box{
+    margin: 20px 20px;
+}
+
+.tag-title {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.tag-list{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.hashtag{
+    /* width:100px; */
+    border: none;
+    border-radius: 8px;
+    background-color: rgb(196, 196, 196);
+    
+    margin-bottom: 6px;
+    margin-right: 6px;
+    padding: 8px;
+
+    color:#fff;
+    font-family: 'Lato';
+    font-size: 17px;
+    text-align: center;
+    text-decoration: none;
+
+    display: inline-block;
+    cursor: default;
+    transition-duration: 0.2s;
+    transition: all 0.5s;
+}
+
+.gender .checked, .gender .hashtag:hover{
+    background-color: rgb(216, 185, 10);
+}
+
+.genres .checked, .genres .hashtag:hover{
+    background-color: rgb(7, 199, 141);
+}
+
+.occupation .checked, .occupation .hashtag:hover{
+    background-color: rgb(7, 186, 199);
+}
+
+@media (max-width: 650px){
+    #search-container{
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .tag-title {
+        font-size: 23px;
+        margin-bottom: 12px;
+    }
+
+    .hashtag {
+        /* width:100px; */
+        border: none;
+        border-radius: 8px;
+        
+        margin-bottom: 5px;
+        margin-right: 5px;
+        padding: 7px;
+
+        color:#fff;
+        font-size: 15px;
+        text-align: center;
+        text-decoration: none;
+
+        display: inline-block;
+        cursor: default;
+    }
+}
+
+
+hr {
+    height: 2px;
+    border: none;
+    background-color:rgb(221, 221, 221);
+    margin: 20px 20px;
+}
+
+
+footer{
+    text-align: center;
+}
