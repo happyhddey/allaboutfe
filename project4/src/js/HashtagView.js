@@ -5,28 +5,32 @@ class HashtagView{
         this.addClass('hashtag');
         this.setText(text);
         this.setOrder(order);
+
+        const orderScale = 50;
+        const selectedMark = "selected";
+        this.selectedState = new SelectedState(this, orderScale, selectedMark);
+        this.unselectedState = new UnselectedState(this, orderScale, selectedMark);
+        this.state = this.unselectedState;
+
+        this.setAction();
     }
 
-    addClass(...classNames){
-        for (name of classNames){
-            this.$hashtag.classList.add(name);
-        }
+    setState(state){
+        this.state = state;
     }
 
-    removeClass(...classNames){
-        for(name of classNames){
-            this.$hashtag.classList.remove(name);
-        }
+    getSelectedState(){
+        return this.selectedState;
     }
 
-    containClass(...classNames){
-        let containAll = true;
-        for(name of classNames){
-            if(!this.$hashtag.classList.contains(name)){
-                containAll = false;
-            }
+    getUnselectedState(){
+        return this.unselectedState;
+    }
+
+    setAction(){
+        this.$hashtag.onclick = () => {
+            this.state.selectHashtag();
         }
-        return containAll;
     }
 
     setText(text){
@@ -37,41 +41,8 @@ class HashtagView{
         this.$hashtag.style.order = order;
     }
 
-    setSelected(){
-        const selectedMark = "selected";
-        if(this.containClass(selectedMark)){
-            this.removeClass(selectedMark);
-        } else{
-            this.addClass(selectedMark);
-        }
-    }
-
-    flipOrder(){
-        const currentOrder = parseInt(this.$hashtag.style.order, 10);
-        const changedOrder = currentOrder > 0 ? (currentOrder - 50) : (currentOrder + 50);
-        this.setOrder(changedOrder);
-    }
-
-    getDom(){
-        return this.$hashtag;
-    }
-}
-
-class HashtagView2{
-
-    constructor(){
-        this.$hashtag = document.createElement('button');
-        this.selectedState = new SelectedState(this);
-        this.unselectedState = new UnselectedState(this);
-        this.state = this.unselectedState;
-    }
-
-    setText(text){
-        this.$hashtag.innerText = text;
-    }
-
-    setOrder(){
-        this.state.setOrder();
+    getOrder(){
+        return this.$hashtag.style.order;
     }
 
     addClass(...classNames){
@@ -86,54 +57,62 @@ class HashtagView2{
         }
     }
 
-    setState(state){
-        this.state = state;
-    }
-
     getDom(){
         return this.$hashtag;
     }
 }
 
+
 class SelectedState{
     
-    constructor(hashtagView){
+    constructor(hashtagView, orderScale, selectedMark){
         this.hashtagView = hashtagView;
-        this.orderScale = 50;
-        this.selectedMark = "selected";
+        this.orderScale = orderScale;
+        this.selectedMark = selectedMark;
     }
 
     flipOrder(){
-        const currentOrder = parseInt(this.$hashtag.style.order, 10);
+        const currentOrder = parseInt(this.hashtagView.getOrder(), 10);
         this.hashtagView.setOrder(currentOrder + this.orderScale);
     }
 
     setSelected(){
-        this.hashtagView.removeClass(selectedMark);
+        this.hashtagView.removeClass(this.selectedMark);
+    }
+
+    selectHashtag(){
+        this.setSelected();
+        this.flipOrder();
+        this.hashtagView.setState(this.hashtagView.getUnselectedState());
     }
 }
 
+
 class UnselectedState{
-    constructor(hashtagView){
+    constructor(hashtagView, orderScale, selectedMark){
         this.hashtagView = hashtagView;
-        this.orderScale = 50;
-        this.selectedMark = "selected";
+        this.orderScale = orderScale;
+        this.selectedMark = selectedMark;
     }
 
     flipOrder(){
-        const currentOrder = parseInt(this.$hashtag.style.order, 10);
+        const currentOrder = parseInt(this.hashtagView.getOrder(), 10);
         this.hashtagView.setOrder(currentOrder - this.orderScale);
     }
 
     setSelected(){
-        this.hashtagView.addClass(selectedMark);
+        this.hashtagView.addClass(this.selectedMark);
+    }
+
+    selectHashtag(){
+        this.setSelected();
+        this.flipOrder();
+        this.hashtagView.setState(this.hashtagView.getSelectedState());
     }
 }
 
 
+const body = document.getElementsByTagName("BODY")[0];
+console.log(body);
 const hashtagView = new HashtagView("good", 3);
-const hashtag = hashtagView.getDom();
-hashtagView.setSelected();
-hashtagView.setSelected();
-hashtagView.flipOrder();
-console.log(hashtag);
+body.appendChild(hashtagView.getDom());
