@@ -1,4 +1,4 @@
-class HashtagView{
+export class HashtagView{
 
     constructor(text, order){
         this.$hashtag = document.createElement('button');
@@ -11,8 +11,10 @@ class HashtagView{
         this.selectedState = new SelectedState(this, orderScale, selectedMark);
         this.unselectedState = new UnselectedState(this, orderScale, selectedMark);
         this.state = this.unselectedState;
+    }
 
-        this.setAction();
+    selectHashtag(){
+        this.state.selectHashtag();
     }
 
     setState(state){
@@ -25,12 +27,6 @@ class HashtagView{
 
     getUnselectedState(){
         return this.unselectedState;
-    }
-
-    setAction(){
-        this.$hashtag.onclick = () => {
-            this.state.selectHashtag();
-        }
     }
 
     setText(text){

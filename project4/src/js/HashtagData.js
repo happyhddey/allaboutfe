@@ -5,7 +5,7 @@ class Hashtag{
         this.selected = false;
     }
 
-    getOrder(order){
+    getOrder(){
         return this.order;
     }
 
