@@ -1,35 +1,66 @@
 class HashtagView{
 
+    constructor(text, order){
+        this.$hashtag = document.createElement('button');
+        this.addClass('hashtag');
+        this.setText(text);
+        this.setOrder(order);
+    }
 
-    moveHashtag($hashtag){
-        const currentOrder = $hashtag.style.order;
-        let changedOrder = 0
-        if(currentOrder > 0){
-            changedOrder = -50 + currentOrder;
-        } else{
-            changedOrder = currentOrder - 50;
+    addClass(...classNames){
+        for (name of classNames){
+            this.$hashtag.classList.add(name);
         }
-        $hashtag.style.order = changedOrder;
+    }
+
+    removeClass(...classNames){
+        for(name of classNames){
+            this.$hashtag.classList.remove(name);
+        }
+    }
+
+    containClass(...classNames){
+        let containAll = true;
+        for(name of classNames){
+            if(!this.$hashtag.classList.contains(name)){
+                containAll = false;
+            }
+        }
+        return containAll;
+    }
+
+    setText(text){
+        this.$hashtag.innerText = text;
+    }
+
+    setOrder(order){
+        this.$hashtag.style.order = order;
+    }
+
+    setSelected(){
+        const selectedMark = "selected";
+        if(this.containClass(selectedMark)){
+            this.removeClass(selectedMark);
+        } else{
+            this.addClass(selectedMark);
+        }
+    }
+
+    flipOrder(){
+        const currentOrder = parseInt(this.$hashtag.style.order, 10);
+        const changedOrder = currentOrder > 0 ? (currentOrder - 50) : (currentOrder + 50);
+        this.setOrder(changedOrder);
+    }
+
+    getDom(){
+        return this.$hashtag;
     }
 }
 
-function makeHashtag(hashtagText, order){
-    const $hashtag = document.createElement('button');
-    $hashtag.classList.add('hashtag');
-    $hashtag.innerText = hashtagText;
-    
-    return $hashtag;
-}
 
-function test(list){
-    const $hashtagList = document.createElement('div');
-    $hashtagList.classList.add('tag-list')
-
-    for(let i=0; i<list.length; i++){
-        hashtag = list[i];
-        const $hashtag = makeHashtag(hashtag.name, hashtag.order);
-        $hashtagList.appendChild($hashtag);
-    }
-
-    return $hashtagList;
-}
+const hashtagView = new HashtagView("good", 3);
+const hashtag = hashtagView.getDom();
+hashtagView.setSelected();
+hashtagView.setSelected();
+hashtagView.flipOrder();
+console.log(hashtag);
