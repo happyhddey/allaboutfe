@@ -1,3 +1,11 @@
+/*
+HashtagView: hashtag DOM을 관리하기 위한 클래스
+hashtag는 button tag로 구현됨
+selected와 unselected 두 가지 상태를 가짐
+selected state: 선택된 경우. selected class 가지고 있음. order 음수.
+unselected state: 선택되지 않은 경우. selected class 없음. order 양수.
+*/
+
 export class HashtagView{
 
     constructor(text, order){
