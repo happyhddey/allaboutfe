@@ -110,9 +110,3 @@ class UnselectedState{
         this.hashtagView.setState(this.hashtagView.getSelectedState());
     }
 }
-
-
-const body = document.getElementsByTagName("BODY")[0];
-console.log(body);
-const hashtagView = new HashtagView("good", 3);
-body.appendChild(hashtagView.getDom());
