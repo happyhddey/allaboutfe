@@ -72,15 +72,15 @@ header{
     transition: all 0.5s;
 }
 
-.feeling .checked, .feeling .hashtag:hover{
-    background-color: rgb(216, 185, 10);
+.age .checked, .age .hashtag:hover{
+    background-color: rgb(216, 144, 10);
 }
 
 .gender .checked, .gender .hashtag:hover{
     background-color: rgb(216, 185, 10);
 }
 
-.genres .checked, .genres .hashtag:hover{
+.genre .checked, .genre .hashtag:hover{
     background-color: rgb(7, 199, 141);
 }
 

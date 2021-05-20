@@ -32,7 +32,7 @@ export class HashtagContainerView{
     makeHashtagTitle(title){
         const $title = document.createElement('div');
         $title.classList.add('hashtag-title');
-        $title.innerText = title;
+        $title.innerText = title.toUpperCase();
 
         return $title;
     }

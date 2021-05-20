@@ -27,7 +27,7 @@ class HahstagList{
     constructor(list){
         this.list = {};
         for(let i=0; i<list.length; i++){
-            const hashtagName = value[i];
+            const hashtagName = list[i];
             this.list[hashtagName] = new Hashtag(hashtagName, i);
         }
     }
@@ -59,10 +59,15 @@ class HahstagList{
     }
 
     getAllHashtagList(){
-        this.list.sort(this.sortBySelected(a, b));
+        const list = [];
+        for(let temp in this.list){
+            list.push(this.list[temp]);
+        }
+        list.sort((a, b) => {
+            return this.sortBySelected(a, b);
+        });
         const hashtagList = [];
-        for(let hashtagName in this.list){
-            const hashtag = this.list[hashtagName];
+        for(let hashtag of list){
             hashtagList.push({
                 name : hashtag.getName(),
                 order : hashtag.getOrder(),
@@ -107,14 +112,14 @@ HashtagData.data = {
 }
 */
 
-class HashtagData{
-    data = null;
-    observers = [];
+export class HashtagData{
 
     constructor(hashtagList){
         this.data = {};
-        for(let typeValue of hashtagList){
-            this.addNewData(typeValue);
+        this.observers = [];
+
+        for(let typeValue in hashtagList){
+            this.addNewData(hashtagList[typeValue]);
         }
     }
 
@@ -123,7 +128,8 @@ class HashtagData{
     }
 
     makeNewHashtagList(value){
-        return new HashtagList(value);
+        const a = new HahstagList(value);
+        return a;
     }
 
     setSelected(type, value){

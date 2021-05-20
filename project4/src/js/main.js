@@ -25,6 +25,9 @@ request = {[
 ]}
 */
 
+import {HashtagContainerListView} from './HashtagContainerListView.js'
+import {HashtagData} from './HashtagData.js'
+
 const hashtagList = [
     {
         type : "genre",
@@ -45,4 +48,24 @@ const hashtagList = [
 ];
 
 
-const data = new HashtagData(hashtagList).getHashtagList();
+class Mediator{
+    constructor(hashtagList){
+        this.hashData = new HashtagData(hashtagList);
+        this.hashDataList = this.hashData.getAllHashtagList();
+        this.hashDataView = new HashtagContainerListView(this.hashDataList);
+        this.hashData.registerObserver(this);
+        this.hashDataView.registerObserver(this);
+    }
+
+    update(type, value){
+        console.log(`event reported: ${type}, ${value}`);
+        this.hashDataView.update(type, value);
+    }
+
+    report(type, value){
+        console.log(`button clicked: ${type}, ${value}`);
+        this.hashData.setSelected(type, value);
+    }
+}
+
+const mediator = new Mediator(hashtagList);
