@@ -63,10 +63,35 @@ class HashtagView2{
         this.$hashtag = document.createElement('button');
         this.selectedState = new SelectedState(this);
         this.unselectedState = new UnselectedState(this);
+        this.state = this.unselectedState;
+    }
+
+    setText(text){
+        this.$hashtag.innerText = text;
     }
 
     setOrder(){
         this.state.setOrder();
+    }
+
+    addClass(...classNames){
+        for (name of classNames){
+            this.$hashtag.classList.add(name);
+        }
+    }
+
+    removeClass(...classNames){
+        for(name of classNames){
+            this.$hashtag.classList.remove(name);
+        }
+    }
+
+    setState(state){
+        this.state = state;
+    }
+
+    getDom(){
+        return this.$hashtag;
     }
 }
 
