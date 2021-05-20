@@ -23,7 +23,6 @@ class Hashtag{
 }
 
 class HahstagList{
-    list = null
 
     constructor(list){
         this.list = {};
@@ -59,7 +58,7 @@ class HahstagList{
         }
     }
 
-    getHashtagList(){
+    getAllHashtagList(){
         this.list.sort(this.sortBySelected(a, b));
         const hashtagList = [];
         for(let hashtagName in this.list){
