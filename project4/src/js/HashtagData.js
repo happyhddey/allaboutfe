@@ -129,15 +129,15 @@ class HashtagData{
     setSelected(type, value){
         const hashtag = this.data[type].getHashtag(value);
         hashtag.setSelected(value);
-        this.notifyingObservers(type, value, hashtag.getSelected());
+        this.notifyingObservers(type, value);
     }
 
-    getHashtagList(){
-        const selectedHashtag = {};
+    getAllHashtagList(){
+        const hashtag = {};
         for(let type in this.data){
-            selectedHashtag[type] = this.data[type].getHashtagList();
+            hashtag[type] = this.data[type].getAllHashtagList();
         }
-        return selectedHashtag;
+        return hashtag;
     }
 
     getSelectedHashtagList(){
@@ -152,9 +152,9 @@ class HashtagData{
         this.observers.push(observer);
     }
 
-    notifyingObservers(type, value, selected){
+    notifyingObservers(type, value){
         for(let observer of this.observers){
-            observer.update(type, value, selected);
+            observer.update(type, value);
         }
     }
 }
