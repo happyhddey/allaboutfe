@@ -16,7 +16,7 @@ export class HashtagContainerListView{
         console.log(hashtagTitle, hashtagName);
     }
 
-    click(hashtagTitle, hashtagName){
-        this.hashtagContainer[hashtagTitle].click(hashtagName);
+    update(hashtagTitle, hashtagName){
+        this.hashtagContainer[hashtagTitle].update(hashtagName);
     }
 }

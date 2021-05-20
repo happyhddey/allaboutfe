@@ -54,8 +54,8 @@ export class HashtagContainerView{
         this.containerList.report(this.hashtagTitle, hashtagName);
     }
 
-    click(hashtagName){
-        this.hashtagList[hashtagName].click();
+    update(hashtagName){
+        this.hashtagList[hashtagName].update();
     }
 
     getDom(){

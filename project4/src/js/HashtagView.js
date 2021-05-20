@@ -27,8 +27,8 @@ export class HashtagView{
         }
     }
 
-    click(){
-        this.state.click();
+    update(){
+        this.state.update();
     }
 
     setState(state){
@@ -90,7 +90,7 @@ class SelectedState{
         this.hashtagView.removeClass(this.selectedMark);
     }
 
-    click(){
+    update(){
         this.setSelected();
         this.flipOrder();
         this.hashtagView.setState(this.hashtagView.getUnselectedState());
@@ -114,7 +114,7 @@ class UnselectedState{
         this.hashtagView.addClass(this.selectedMark);
     }
 
-    click(){
+    update(){
         this.setSelected();
         this.flipOrder();
         this.hashtagView.setState(this.hashtagView.getSelectedState());
