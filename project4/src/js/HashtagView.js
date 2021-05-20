@@ -42,13 +42,13 @@ export class HashtagView{
     }
 
     addClass(...classNames){
-        for (name of classNames){
+        for (let name of classNames){
             this.$hashtag.classList.add(name);
         }
     }
 
     removeClass(...classNames){
-        for(name of classNames){
+        for(let name of classNames){
             this.$hashtag.classList.remove(name);
         }
     }
