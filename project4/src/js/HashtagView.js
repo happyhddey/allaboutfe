@@ -57,6 +57,54 @@ class HashtagView{
     }
 }
 
+class HashtagView2{
+
+    constructor(){
+        this.$hashtag = document.createElement('button');
+        this.selectedState = new SelectedState(this);
+        this.unselectedState = new UnselectedState(this);
+    }
+
+    setOrder(){
+        this.state.setOrder();
+    }
+}
+
+class SelectedState{
+    
+    constructor(hashtagView){
+        this.hashtagView = hashtagView;
+        this.orderScale = 50;
+        this.selectedMark = "selected";
+    }
+
+    flipOrder(){
+        const currentOrder = parseInt(this.$hashtag.style.order, 10);
+        this.hashtagView.setOrder(currentOrder + this.orderScale);
+    }
+
+    setSelected(){
+        this.hashtagView.removeClass(selectedMark);
+    }
+}
+
+class UnselectedState{
+    constructor(hashtagView){
+        this.hashtagView = hashtagView;
+        this.orderScale = 50;
+        this.selectedMark = "selected";
+    }
+
+    flipOrder(){
+        const currentOrder = parseInt(this.$hashtag.style.order, 10);
+        this.hashtagView.setOrder(currentOrder - this.orderScale);
+    }
+
+    setSelected(){
+        this.hashtagView.addClass(selectedMark);
+    }
+}
+
 
 const hashtagView = new HashtagView("good", 3);
 const hashtag = hashtagView.getDom();
