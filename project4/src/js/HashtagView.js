@@ -8,21 +8,27 @@ unselected state: 선택되지 않은 경우. selected class 없음. order 양�
 
 export class HashtagView{
 
-    constructor(text, order){
+    constructor(text, order, container){
         this.$hashtag = document.createElement('button');
         this.addClass('hashtag');
         this.setText(text);
         this.setOrder(order);
 
         const orderScale = 50;
-        const selectedMark = "selected";
+        const selectedMark = "checked";
         this.selectedState = new SelectedState(this, orderScale, selectedMark);
         this.unselectedState = new UnselectedState(this, orderScale, selectedMark);
         this.state = this.unselectedState;
+
+        this.$container = container;
+
+        this.$hashtag.onclick = () => {
+            this.$container.report(text);
+        }
     }
 
-    selectHashtag(){
-        this.state.selectHashtag();
+    click(){
+        this.state.click();
     }
 
     setState(state){
@@ -84,7 +90,7 @@ class SelectedState{
         this.hashtagView.removeClass(this.selectedMark);
     }
 
-    selectHashtag(){
+    click(){
         this.setSelected();
         this.flipOrder();
         this.hashtagView.setState(this.hashtagView.getUnselectedState());
@@ -108,7 +114,7 @@ class UnselectedState{
         this.hashtagView.addClass(this.selectedMark);
     }
 
-    selectHashtag(){
+    click(){
         this.setSelected();
         this.flipOrder();
         this.hashtagView.setState(this.hashtagView.getSelectedState());
