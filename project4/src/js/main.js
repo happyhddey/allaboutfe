@@ -1,4 +1,5 @@
 // API 에서 받아온 hashtag list
+// value 순서가 중요 => hashtag를 정렬할 때 해당 순서를 기준으로 함
 /*
 response = {[
     {
@@ -43,7 +44,7 @@ const hashtagList = [
     },
     {  
         type : "occupation",
-        value : ["Other", "Academic", "Educator", "Artist", "Clerical", "Admin", "College Student", "Grad Student", "Customer Service", "Doctor", "Healthcare", "Executive", "Managerial", "Farmer", "Homemaker", "K-12 Student", "Lawyer", "Programmer", "Retired", "Sales", "Marketing", "Scientist", "Self-employed", "Technician", "Engineer", "Tradesman", "Craftsman", "Unemployed", "Writer"],
+        value : ["Academic", "Educator", "Artist", "Clerical", "Admin", "College Student", "Grad Student", "Customer Service", "Doctor", "Healthcare", "Executive", "Managerial", "Farmer", "Homemaker", "K-12 Student", "Lawyer", "Programmer", "Retired", "Sales", "Marketing", "Scientist", "Self-employed", "Technician", "Engineer", "Tradesman", "Craftsman", "Unemployed", "Writer", "Other"],
     },
 ];
 
