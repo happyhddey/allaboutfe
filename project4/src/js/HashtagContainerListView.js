@@ -11,6 +11,8 @@ export class HashtagContainerListView{
             const hashtagContainerView = new HashtagContainerView(hashtagTitle, hashtagData[hashtagTitle], this);
             this.hashtagContainer[hashtagTitle] = hashtagContainerView;
             $div.appendChild(hashtagContainerView.getDom());
+            const $hr = document.createElement('hr');
+            $div.appendChild($hr);
         }
     }
 
