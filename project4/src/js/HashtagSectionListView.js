@@ -1,16 +1,16 @@
-import {HashtagContainerView} from './HashtagContainerView.js'
+import {HashtagSectionView} from './HashtagSectionView.js'
 
 
-export class HashtagContainerListView{
+export class HashtagSectionListView{
     constructor(hashtagData){
         this.observers = [];
 
-        this.hashtagContainer = {};
+        this.hashtagSection = {};
         const $div = document.getElementsByClassName("hashtag-container-list")[0];
         for(let hashtagTitle in hashtagData){
-            const hashtagContainerView = new HashtagContainerView(hashtagTitle, hashtagData[hashtagTitle], this);
-            this.hashtagContainer[hashtagTitle] = hashtagContainerView;
-            $div.appendChild(hashtagContainerView.getDom());
+            const hashtagSectionView = new HashtagSectionView(hashtagTitle, hashtagData[hashtagTitle], this);
+            this.hashtagSection[hashtagTitle] = hashtagSectionView;
+            $div.appendChild(hashtagSectionView.getDom());
             const $hr = document.createElement('hr');
             $div.appendChild($hr);
         }
@@ -31,6 +31,6 @@ export class HashtagContainerListView{
     }
 
     update(hashtagTitle, hashtagName){
-        this.hashtagContainer[hashtagTitle].update(hashtagName);
+        this.hashtagSection[hashtagTitle].update(hashtagName);
     }
 }

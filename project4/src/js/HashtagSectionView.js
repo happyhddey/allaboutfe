@@ -1,27 +1,27 @@
 import {HashtagView} from './HashtagView.js'
 
 /*
-HashtagContainerView: property 별 hashtag 섹션을 관리하는 클래스
+HashtagSectionView: property 별 hashtag 섹션을 관리하는 클래스
 title, list DOM을 만들어서 관리함
 list를 받아와서 hashtag list를 만듦
 report: button click event 발생 시 해당 함수가 호출됨. title 정보를 덧붙여서 다시 전달.
 click: 데이터에 변화가 생기면 해당 함수가 호출됨. HashtagView에 전달.
 */
 
-export class HashtagContainerView{
-    constructor(hashtagTitle, hashtagList, containerList){
+export class HashtagSectionView{
+    constructor(hashtagTitle, hashtagList, sectionList){
         this.hashtagList = {};
         this.hashtagTitle = hashtagTitle;
-        this.containerList = containerList;
+        this.sectionList = sectionList;
 
-        this.$container = this.makeHashtagContainer(hashtagTitle);
+        this.$section = this.makeHashtagSection(hashtagTitle);
         this.$title = this.makeHashtagTitle(hashtagTitle);
         this.$list = this.makeHashtagList(hashtagList);
-        this.$container.appendChild(this.$title);
-        this.$container.appendChild(this.$list);
+        this.$section.appendChild(this.$title);
+        this.$section.appendChild(this.$list);
     }
 
-    makeHashtagContainer(title){
+    makeHashtagSection(title){
         const $container = document.createElement('div');
         $container.classList.add('hashtag-container');
         $container.classList.add(title);
@@ -51,7 +51,7 @@ export class HashtagContainerView{
     }
 
     report(hashtagName){
-        this.containerList.report(this.hashtagTitle, hashtagName);
+        this.sectionList.report(this.hashtagTitle, hashtagName);
     }
 
     update(hashtagName){
@@ -59,6 +59,6 @@ export class HashtagContainerView{
     }
 
     getDom(){
-        return this.$container;
+        return this.$section;
     }
 }

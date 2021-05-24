@@ -26,7 +26,7 @@ request = {[
 ]}
 */
 
-import {HashtagContainerListView} from './HashtagContainerListView.js'
+import {HashtagSectionListView} from './HashtagSectionListView.js'
 import {HashtagData} from './HashtagData.js'
 
 const hashtagList = [
@@ -52,15 +52,14 @@ const hashtagList = [
 class Mediator{
     constructor(hashtagList){
         this.hashData = new HashtagData(hashtagList);
-        this.hashDataList = this.hashData.getAllHashtagList();
-        this.hashDataView = new HashtagContainerListView(this.hashDataList);
+        this.hashView = new HashtagSectionListView(this.hashData.getAllHashtagList());
         this.hashData.registerObserver(this);
-        this.hashDataView.registerObserver(this);
+        this.hashView.registerObserver(this);
     }
 
     update(type, value){
         console.log(`event reported: ${type}, ${value}`);
-        this.hashDataView.update(type, value);
+        this.hashView.update(type, value);
     }
 
     report(type, value){
