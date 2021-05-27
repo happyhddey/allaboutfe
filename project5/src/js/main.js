@@ -14,7 +14,6 @@ async function main(){
     // make paintMap
     const geoFeature = await loadJson(geoFileName);
     const covidData = await loadJson(covidFileName);
-    console.log(geoFeature);
     const confirmedCaseByCountry = new ConfirmedCaseByCountry(covidData);
 
     const paintMap = new PaintMap(geoFeature, confirmedCaseByCountry);
