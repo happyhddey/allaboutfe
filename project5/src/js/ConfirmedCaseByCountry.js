@@ -30,6 +30,21 @@ export class ConfirmedCaseByCountry{
         }
         return confirmedCaseByDate;
     }
+
+    getNumConfirmedCase(countryCode, date){
+        let message = "No Information";
+        if(this.caseByCountry.hasOwnProperty(countryCode) && this.caseByCountry[countryCode][date] != undefined){
+            const numConfirmedCase = this.caseByCountry[countryCode][date];
+            let temp = numConfirmedCase.toString(10);
+            let i = temp.length % 3;
+            let parts = i ? [temp.substr(0, i)] : [];
+            for(; i<temp.length; i+=3){
+                parts.push(temp.substr(i, 3));
+            }
+            message = parts.join(',');
+        }
+        return message;
+    }
     
     getLevel(countryCode, date){
         let level = this.confirmedCaseLevel.getDefaultLevel();
@@ -50,5 +65,9 @@ export class ConfirmedCaseByCountry{
 
     getLevelList(){
         return this.confirmedCaseLevel.getLevelList();
+    }
+
+    getLatestDate(){
+        return this.dateList.getLatestDate();
     }
 }

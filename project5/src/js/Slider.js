@@ -19,7 +19,7 @@ export class Slider{
         $input.type = "range";
         $input.min = "0";
         $input.max = this.scale-1;
-        $input.value = 0;
+        $input.value = this.scale-1;
         $input.classList.add("slider");
         return $input;
     }

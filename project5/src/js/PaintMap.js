@@ -2,17 +2,20 @@
 
 export class PaintMap{
     constructor(geoFeature, confirmedCaseByCountry){
-        this.map = L.map('mapid').setView([51.505, -0.09], 13);
+        this.map = L.map('mapid').setView([35.5936, 129.352], 8);
         this.geoFeature = geoFeature;
         this.confirmedCaseByCountry = confirmedCaseByCountry;
         this.makeBackgroundMap();
         this.makeColorLayer();
+        const latestDate = this.confirmedCaseByCountry.getLatestDate();
+        this.changeColorLayer(latestDate);
+        this.makeLegend();
         this.addEvent();
     }
 
     makeBackgroundMap(){
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-            maxZoom: 7,
+            maxZoom: 9,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
             	'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             id: 'mapbox/light-v9',
@@ -45,31 +48,36 @@ export class PaintMap{
             layer.setStyle({
                 fillColor: `var( --step-${level} )`,
             })
+
+            const countryFullName = layer.feature.properties.ADMIN;
+            const tooltipMsg = '<b>' + countryFullName + '</b><br />'
+                + 'Confirmed: ' + this.confirmedCaseByCountry.getNumConfirmedCase(countryCode, date);
+            layer.bindTooltip(tooltipMsg);
         })
     }
 
     
-    
     makeLegend(){
         const legend = L.control({position: 'bottomright'});
 
+        const that = this;
         legend.onAdd = function(map) {
-            var div = L.DomUtil.create('div', 'info legend'),
-                grades = confirmedCaseByCountry.getLevel(),
+            const $div = L.DomUtil.create('div', 'info legend'),
+                grades = that.confirmedCaseByCountry.getLevelList(),
                 labels = [];
 
-            // loop through our density intervals and generate a label with a colored square for each interval
-            for (var i = 0; i < grades.length; i++) {
-                div.innerHTML +=
-                    '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-                    grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            for (let i = 0; i < grades.length; i++) {
+                const grade_i = grades[i] < 1000 ? grades[i] + "k" : grades[i] / 1000 + "m";
+                const grade_i_1 = grades[i+1] < 1000 ? grades[i+1] + "k" : grades[i+1] / 1000 + "m";
+                $div.innerHTML +=
+                    '<i style="background:' + `var( --step-${i+1} )` + '"></i> ' +
+                    (grades[i] ? grade_i : grades[i]) + (grades[i + 1] ? '&ndash;' + grade_i_1 + '<br>' : '+<br>');
             }
-            return div;
+            return $div;
         };
 
-        legend.addTo(map);
+        legend.addTo(this.map);
     }
-
 
     addEvent(){
         this.layer.eachLayer((layer) => {
@@ -88,6 +96,7 @@ export class PaintMap{
         if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
             this.bringToFront();
         }
+        this.openTooltip();
     }
 
     resetHighlight() {
