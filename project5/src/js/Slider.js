@@ -61,7 +61,7 @@ export class Slider{
         const $div = document.getElementsByClassName("player-container")[0];
         $div.appendChild(this.$play);
         $div.appendChild(this.$stop);
-        $div.appendChild(this.$board);
+        //$div.appendChild(this.$board);
     }
 
     setSliderValue(value){

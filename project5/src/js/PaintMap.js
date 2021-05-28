@@ -39,10 +39,26 @@ export class PaintMap{
                     fillOpacity: 0.7
             };
         }}).addTo(this.map);
+
+
+
+
+        this.info = L.control();
+        this.info.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'date'); // create a div with a class "info"
+            this.update();
+            return this._div;
+        };
+        this.info.update = function (date) {
+            this._div.innerHTML = "DATE: " + date;
+        };
+        this.info.addTo(this.map);
     }
 
     changeColorLayer(date){
         const that = this;
+        this.info.update(date);
+
         this.layer.eachLayer((layer) => {
             const countryCode = layer.feature.properties.ISO_A3;
             const level = this.confirmedCaseByCountry.getLevel(countryCode, date);
@@ -53,7 +69,7 @@ export class PaintMap{
             const countryFullName = layer.feature.properties.ADMIN;
             const tooltipMsg = '<b>' + countryFullName + '</b><br />'
                 + 'Confirmed: ' + this.confirmedCaseByCountry.getNumConfirmedCase(countryCode, date);
-            layer.bindTooltip(tooltipMsg);
+            //layer.bindTooltip(tooltipMsg);
 
             const popup = L.popup();
             popup.setContent(tooltipMsg);
