@@ -41,7 +41,7 @@ export class Slider{
 
     makeStopButton(){
         const $button = document.createElement('button');
-        $button.innerText = "STOP";
+        $button.innerText = "PAUSE";
         $button.classList.add("button");
         return $button;
     }
@@ -61,7 +61,6 @@ export class Slider{
         const $div = document.getElementsByClassName("player-container")[0];
         $div.appendChild(this.$play);
         $div.appendChild(this.$stop);
-        //$div.appendChild(this.$board);
     }
 
     setSliderValue(value){
@@ -89,13 +88,25 @@ export class Slider{
         }
 
         this.$play.onclick = () => {
-            this.clearAllTimeout();
-            for(let i=0; i<this.scale; i++){
-                setTimeout(() => {
-                    this.setSliderValue(i);
-                    const date = this.setDateBoard(i);
-                    callback(date);
-                }, 10 * i)
+            const dateIndex = parseInt(this.getSliderValue());
+
+            if (dateIndex === this.scale - 1){
+                for(let i=0; i<this.scale; i++){
+                    setTimeout(() => {
+                        this.setSliderValue(i);
+                        const date = this.setDateBoard(i);
+                        callback(date);
+                    }, 10 * i)
+                }
+            } else{
+                this.clearAllTimeout();
+                for(let i=0; i<this.scale - dateIndex; i++){
+                    setTimeout(() => {
+                        this.setSliderValue(i + dateIndex);
+                        const date = this.setDateBoard(i + dateIndex);
+                        callback(date);
+                    }, 10 * i)
+                }
             }
         }
 
