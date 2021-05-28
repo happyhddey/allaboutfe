@@ -41,8 +41,6 @@ export class PaintMap{
         }}).addTo(this.map);
 
 
-
-
         this.info = L.control();
         this.info.onAdd = function (map) {
             this._div = L.DomUtil.create('div', 'date'); // create a div with a class "info"
@@ -56,7 +54,6 @@ export class PaintMap{
     }
 
     changeColorLayer(date){
-        const that = this;
         this.info.update(date);
 
         this.layer.eachLayer((layer) => {
@@ -69,25 +66,7 @@ export class PaintMap{
             const countryFullName = layer.feature.properties.ADMIN;
             const tooltipMsg = '<b>' + countryFullName + '</b><br />'
                 + 'Confirmed: ' + this.confirmedCaseByCountry.getNumConfirmedCase(countryCode, date);
-            //layer.bindTooltip(tooltipMsg);
-
-            const popup = L.popup();
-            popup.setContent(tooltipMsg);
-            layer.bindPopup(popup);
-            layer.on('mouseover', function (e) {
-                const popup = e.target.getPopup();
-                popup.setLatLng(e.latlng).openOn(that.map);
-            });
-            
-            layer.on('mouseout', function(e) {
-                e.target.closePopup();
-            });
-            
-            layer.on('mousemove', function (e) {
-                e.target.closePopup();
-                const popup = e.target.getPopup();
-                popup.setLatLng(e.latlng).openOn(that.map);
-            });
+            layer.bindTooltip(tooltipMsg);
         })
     }
 
@@ -118,10 +97,11 @@ export class PaintMap{
         this.layer.eachLayer((layer) => {
             layer.on('mouseover', this.highlightFeature);
             layer.on('mouseout', this.resetHighlight);
+            layer.on('mousemove', this.moveHighlight);
         })
     }
 
-    highlightFeature(){
+    highlightFeature(e){
         this.setStyle({
             weight: 5,
             color: 'gray',
@@ -131,7 +111,7 @@ export class PaintMap{
         if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
             this.bringToFront();
         }
-        this.openTooltip();
+        this.openTooltip(e.latlng);
     }
 
     resetHighlight() {
@@ -140,5 +120,9 @@ export class PaintMap{
             color: 'white',
             dashArray: '3',
         })
+    }
+
+    moveHighlight(e){
+        this.openTooltip(e.latlng);
     }
 }
