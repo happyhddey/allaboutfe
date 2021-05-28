@@ -1,0 +1,136 @@
+:root {
+    --step-0: #ffffff;
+    --step-1: #ffeda0;
+    --step-2: #fed976;
+    --step-3: #feb24c;
+    --step-4: #ff8b00;
+    --step-5: #fc4e2a;
+    --step-6: #e31a1c;
+    --step-7: #bd0026;
+    --step-8: #800026;
+    --step-9: #adadad;
+
+    --slider: #91c00f;
+    --board: #0fc06d;
+}
+
+body{
+    font-family: 'Lato';
+}
+
+header{
+    margin-top: 3%;
+    text-align: center;
+}
+
+#mapid {
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 700px;
+}
+
+.slider-container {
+    margin: 30px 20% 0px 20%;
+    display: flex;
+}
+
+.player-container{
+    margin-top: 10px;
+    justify-content: center;
+    display: flex;
+}
+  
+.slider {
+    -webkit-appearance: none; 
+    appearance: none;
+    margin: 4px;
+    width: 100%;
+    height: 20px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+  
+.slider:hover {
+    opacity: 1; 
+}
+  
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px; 
+    height: 20px; 
+    border-radius: 4px;
+    background: var(--slider);
+    cursor: pointer;
+}
+  
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    background: var(--slider);
+    cursor: pointer;
+}
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+.legend {
+    font-family: 'Lato';
+    line-height: 18px;
+    color: #555;
+}
+
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+
+.button{
+    font-family: 'Lato';
+    margin-right: 5px;
+    padding: 7px;
+    border-radius: 4px;
+    background-color: var(--slider);
+	color: #fff;
+    border: none;
+}
+
+.board{
+    font-family: 'Lato';
+    font-size: 15px;
+    margin-left: 30px;
+    padding: 7px;
+    border-radius: 4px;
+    background-color: var(--board);
+	color: #fff;
+    border: none;
+}
+
+h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+.date {
+    padding: 6px 8px;
+    font-family: 'Lato';
+    font-size: 15px;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
